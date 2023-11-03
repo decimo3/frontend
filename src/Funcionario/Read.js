@@ -39,7 +39,7 @@ export default function Read()
             <td>{f.nome_colaborador}</td>
             <td>{f.funcao}</td>
             <td>
-            <Link to="Edit">Editar</Link>
+            <Link to="Edit" state={f}>Editar</Link>
             </td>
           </tr>
         ))}
