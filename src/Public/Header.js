@@ -10,7 +10,7 @@ export default function Header()
         <nav className="card text-center d-flex flex-row justify-content-around p-2 m-2">
           <Link to='/'>Inicio</Link>
           <Link to='/Upload'>Upload</Link>
-          <Link to='Funcionario'>Funcionários</Link>
+          <Link to='/Funcionario'>Funcionários</Link>
           <Link to='/Composicao'>Composições</Link>
           <Link to='/Relatorio'>Relatórios</Link>
         </nav>
