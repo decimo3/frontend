@@ -1,7 +1,7 @@
 import React from "react";
 import { baseURL } from "../Environment";
 import { Link } from "react-router-dom";
-export default function ReadFuncionario()
+export default function Read()
 {
   const [func, setFunc] = React.useState([]);
   React.useEffect(() => {
@@ -22,7 +22,7 @@ export default function ReadFuncionario()
   }
   return (
     <main className="card m-2 p-2">
-      <Link to='/CreateFuncionario'>Criar novo funcionário</Link>
+      <Link to='Create'>Criar novo funcionário</Link>
       <table className="table table-hover">
       <thead>
         <tr>
@@ -39,7 +39,7 @@ export default function ReadFuncionario()
             <td>{f.nome_colaborador}</td>
             <td>{f.funcao}</td>
             <td>
-            <Link to="/EditFuncionario/${f.matricula}">Editar</Link>
+            <Link to="Edit">Editar</Link>
             </td>
           </tr>
         ))}
