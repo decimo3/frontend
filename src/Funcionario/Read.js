@@ -20,6 +20,7 @@ export default function Read()
       </div>
     );
   }
+  const funcoes = ["Eletricista", "Supervisor"]
   return (
     <main className="card m-2 p-2">
       <Link to='Create'>Criar novo funcionário</Link>
@@ -37,7 +38,7 @@ export default function Read()
           <tr scope="row" key={f.matricula}>
             <td>{f.matricula}</td>
             <td>{f.nome_colaborador}</td>
-            <td>{f.funcao}</td>
+            <td>{funcoes[f.funcao]}</td>
             <td>
             <Link to="Edit" state={f}>Editar</Link>
             </td>
