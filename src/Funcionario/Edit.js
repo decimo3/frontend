@@ -1,13 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-function isValidMatricula(mat)
-{
-  return (RegExp(/[0-9]{7}/).test(mat)) ? "d-none" : "invalid-feedback";
-}
-function isValidName(nom)
-{
-  return (RegExp(/[A-Z ]{4,60}/).test(nom)) ? "d-none" : "invalid-feedback";
-}
+
 export default function Edit()
 {
   const [stateMat, setStateMat] = React.useState("d-none");

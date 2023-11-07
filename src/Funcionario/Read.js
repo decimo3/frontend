@@ -1,6 +1,7 @@
 import React from "react";
 import { baseURL } from "../Environment";
 import { Link } from "react-router-dom";
+import { funcoes } from "./Utils";
 export default function Read()
 {
   const [func, setFunc] = React.useState([]);
@@ -20,7 +21,6 @@ export default function Read()
       </div>
     );
   }
-  const funcoes = ["Eletricista", "Supervisor"]
   return (
     <main className="card m-2 p-2">
       <Link to='Create'>Criar novo funcionário</Link>
