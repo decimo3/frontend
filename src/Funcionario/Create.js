@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../Environment";
-
+import { isValidName, isValidMatricula } from './Utils';
 export default function Create()
 {
   async function newFuncionario(mat, nom, fun)
@@ -27,7 +27,8 @@ export default function Create()
         console.error(r);
         return "rejeitado";
       });
-    return res;
+    if (res === "aceitado") history('/Funcionario');
+    if (res === "rejeitado") history('/Funcionario/Create');
   }
   const history = useNavigate();
   const [mat, setMat] = React.useState("");
@@ -37,11 +38,6 @@ export default function Create()
   const [fun, setFun] = React.useState("");
   const [stateFun, setStateFun] = React.useState('d-none');
   const [redirect, setRedirect] = React.useState(null);
-  React.useEffect(() => {
-    console.log(redirect);
-    if (redirect === "aceitado") history('/Create');
-    if (redirect === "rejeitado") history('/Index');
-  }, [redirect]);
   return (
     <form className="card p-2 m-2">
       <div className="form-group my-2">
