@@ -18,19 +18,20 @@ export default function Create()
     setlistaAvisos([]);
     setShowModal(false);
   }
+  const updateLista = (msg) => {
+    let newarr = listaAvisos;
+    newarr.push(msg);
+    setlistaAvisos(newarr);
+  }
   async function newFuncionario(mat, nom, fun)
   {
     if(!isValidName(nom))
     {
-      let newarr = listaAvisos;
-      newarr.push("O nome digitado não é válido!");
-      setlistaAvisos(newarr);
+      updateLista("O nome digitado não é válido!");
     }
     if(!isValidMatricula(mat))
     {
-      let newarr = listaAvisos;
-      newarr.push("O número de matrícula inserida não é válida!");
-      setlistaAvisos(newarr);
+      updateLista("O número de matrícula inserida não é válida!");
     }
     if(listaAvisos.length > 0) {
       setShowModal(true);
@@ -49,27 +50,23 @@ export default function Create()
       })
     }
     const res = await fetch(`${baseURL}/Funcionario`, req)
-      .then((r) => {
-        console.dir(r);
-        return (r.status === 201) ? "aceitado" : "rejeitado";
-      })
-      .catch((r) => {
-        console.error(r);
-        return "errado";
-      });
-    if (res === "aceitado") {
-      let newarr = listaAvisos;
-      newarr.push("Cadastrado efetivado!");
-      setlistaAvisos(newarr);
+    .then((r) => {
+      if (r.status === 201) {
+        updateLista("Cadastro efetivado!");
+        setShowModal(true);
+        return;
+      }
+      updateLista("Cadastro rejeitado!");
+      updateLista(r.text);
       setShowModal(true);
-    }
-    
-    if (res === "rejeitado") {
-      let newarr = listaAvisos;
-      newarr.push("Cadastrado rejeitado!");
-      setlistaAvisos(newarr);
+      return;
+    })
+    .catch((r) => {
+      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
+      updateLista(r);
       setShowModal(true);
-    }
+      return;
+    });
   }
   return (
     <>
