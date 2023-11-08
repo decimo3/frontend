@@ -4,8 +4,28 @@ import { baseURL } from "../Environment";
 import { isValidName, isValidMatricula } from './Utils';
 export default function Create()
 {
+  // variables and states declarations;
+  const history = useNavigate();
+  const [mat, setMat] = React.useState("");
+  const [stateMat, setStateMat] = React.useState('d-none');
+  const [nom, setNom] = React.useState("");
+  const [stateNom, setStateNom] = React.useState('d-none');
+  const [fun, setFun] = React.useState("");
+  const [stateFun, setStateFun] = React.useState('d-none');
+  const [redirect, setRedirect] = React.useState(null);
+  // hight level functions declarations;
   async function newFuncionario(mat, nom, fun)
   {
+    if(!isValidName(nom))
+    {
+      setStateNom('invalid-feedback');
+      return "rejeitado";
+    }
+    if(!isValidMatricula(mat))
+    {
+      setStateMat('invalid-feedback');
+      return "rejeitado";
+    }
     const data = JSON.stringify({
       matricula: mat,
       nome_colaborador: nom,
@@ -30,14 +50,6 @@ export default function Create()
     if (res === "aceitado") history('/Funcionario');
     if (res === "rejeitado") history('/Funcionario/Create');
   }
-  const history = useNavigate();
-  const [mat, setMat] = React.useState("");
-  const [stateMat, setStateMat] = React.useState('d-none');
-  const [nom, setNom] = React.useState("");
-  const [stateNom, setStateNom] = React.useState('d-none');
-  const [fun, setFun] = React.useState("");
-  const [stateFun, setStateFun] = React.useState('d-none');
-  const [redirect, setRedirect] = React.useState(null);
   return (
     <form className="card p-2 m-2">
       <div className="form-group my-2">
