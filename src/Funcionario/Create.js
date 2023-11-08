@@ -2,29 +2,39 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../Environment";
 import { isValidName, isValidMatricula } from './Utils';
+import Modal from "../Modal";
 export default function Create()
 {
   // variables and states declarations;
   const history = useNavigate();
   const [mat, setMat] = React.useState("");
-  const [stateMat, setStateMat] = React.useState('d-none');
   const [nom, setNom] = React.useState("");
-  const [stateNom, setStateNom] = React.useState('d-none');
   const [fun, setFun] = React.useState("");
-  const [stateFun, setStateFun] = React.useState('d-none');
-  const [redirect, setRedirect] = React.useState(null);
+  const [listaAvisos, setlistaAvisos] = React.useState([]);
+  const [showModal, setShowModal] = React.useState(false);
   // hight level functions declarations;
+  const onCloseModal = () => {
+    if(listaAvisos[0] == "Cadastrado efetivado!") history('/Funcionario');
+    setlistaAvisos([]);
+    setShowModal(false);
+  }
   async function newFuncionario(mat, nom, fun)
   {
     if(!isValidName(nom))
     {
-      setStateNom('invalid-feedback');
-      return "rejeitado";
+      let newarr = listaAvisos;
+      newarr.push("O nome digitado não é válido!");
+      setlistaAvisos(newarr);
     }
     if(!isValidMatricula(mat))
     {
-      setStateMat('invalid-feedback');
-      return "rejeitado";
+      let newarr = listaAvisos;
+      newarr.push("O número de matrícula inserida não é válida!");
+      setlistaAvisos(newarr);
+    }
+    if(listaAvisos.length > 0) {
+      setShowModal(true);
+      return;
     }
     const data = JSON.stringify({
       matricula: mat,
@@ -41,26 +51,37 @@ export default function Create()
     const res = await fetch(`${baseURL}/Funcionario`, req)
       .then((r) => {
         console.dir(r);
-        return "aceitado";
+        return (r.status === 201) ? "aceitado" : "rejeitado";
       })
       .catch((r) => {
         console.error(r);
-        return "rejeitado";
+        return "errado";
       });
-    if (res === "aceitado") history('/Funcionario');
-    if (res === "rejeitado") history('/Funcionario/Create');
+    if (res === "aceitado") {
+      let newarr = listaAvisos;
+      newarr.push("Cadastrado efetivado!");
+      setlistaAvisos(newarr);
+      setShowModal(true);
+    }
+    
+    if (res === "rejeitado") {
+      let newarr = listaAvisos;
+      newarr.push("Cadastrado rejeitado!");
+      setlistaAvisos(newarr);
+      setShowModal(true);
+    }
   }
   return (
+    <>
+    {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
     <form className="card p-2 m-2">
       <div className="form-group my-2">
         <label>Matrícula Light:</label>
-        <input className="form-control" type="number" value={mat} onChange={(e) => {setMat(e.target.value);}}/>
-        <p className={stateMat}>O matrícula digitada é inválida!</p>
+        <input className="form-control" type="number" value={mat} onChange={(e) => {setMat(e.target.value);}} required/>
       </div>
       <div className="form-group py-2">
         <label>Nome do colaborador:</label>
-        <input type="text" className="form-control" value={nom} onChange={(e) => {setNom(e.target.value);}}/>
-        <p className={stateNom}>O nome digitado é inválido!</p>
+        <input type="text" className="form-control" value={nom} onChange={(e) => {setNom(e.target.value);}} required/>
       </div>
       <div className="form-group py-2">
         <label>Função do colaborador:</label>
@@ -68,12 +89,12 @@ export default function Create()
           <option value="0">Eletricista</option>
           <option value="1">Supervisor</option>
         </select>
-        <p className={stateFun}>A função escolhida não é válida!</p>
       </div>
       <div className="form-group py-2">
-        <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={() => {setRedirect(newFuncionario(mat, nom, fun))}}/>
+        <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={() => {newFuncionario(mat, nom, fun);}}/>
         <input type="button" className="btn btn-white btn-block border" value="Voltar" onClick={() => {history('/Funcionario');}} />
       </div>
     </form>
+    </>
   );
 }
