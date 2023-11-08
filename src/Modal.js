@@ -14,7 +14,7 @@ export default function Modal({ listaAvisos, onClose })
             </div>
             <hr/>
             <div className="modal-body">
-              {listaAvisos.map((li) => (<p className="text-danger">{li}</p>))}
+              {listaAvisos.map((li, i) => (<p key={i} className="text-danger">{li}</p>))}
             </div>
             <hr/>
             <div className="modal-footer">
