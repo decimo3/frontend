@@ -1,13 +1,115 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import Modal from "../Modal";
+import { baseURL } from "../Environment";
+import { isValidName, isValidMatricula } from './Utils';
 export default function Edit()
 {
-  let { state } = useLocation()
+  const { state } = useLocation();
+  const History = useNavigate();
   const [stateMat, setMat] = React.useState(state.matricula);
   const [stateNom, setNom] = React.useState(state.nome_colaborador);
   const [stateFun, setFun] = React.useState(state.funcao);
+  const [confir, setConfir] = React.useState(false);
+  const [listaAvisos, setlistaAvisos] = React.useState([]);
+  const [showModal, setShowModal] = React.useState(false);
+  const onCloseModal = () => {
+    if(listaAvisos[0] == "Funcionário não encontrado!") History('/Funcionario');
+    if(listaAvisos[0] == "Funcionário excluído!") History('/Funcionario');
+    setlistaAvisos([]);
+    setShowModal(false);
+  }
+  const updateLista = (msg) => {
+    let newarr = listaAvisos;
+    newarr.push(msg);
+    setlistaAvisos(newarr);
+  }
+  const editFuncionario = async () => {
+    if(!isValidName(stateNom))
+    {
+      updateLista("O nome digitado não é válido!");
+    }
+    if(!isValidMatricula(stateMat))
+    {
+      updateLista("O número de matrícula inserida não é válida!");
+    }
+    if(listaAvisos.length > 0) {
+      setShowModal(true);
+      return;
+    }
+    const data = JSON.stringify({
+      matricula: stateMat,
+      nome_colaborador: stateNom,
+      funcao: Number(stateFun)
+    })
+    const req = {
+      method: "PUT",
+      body: data,
+      headers: new Headers({
+        'Content-Type': 'application/json; charset=UTF-8'
+      })
+    }
+    const res = await fetch(`${baseURL}/Funcionario/${state.matricula}`, req)
+    .then((r) => {
+      if (r.status === 204) {
+        updateLista("Funcionário atualizado!");
+        setShowModal(true);
+        return;
+      }
+      if(r.status === 404) {
+        updateLista("Funcionário não encontrado!");
+        updateLista(r.text);
+        setShowModal(true);
+        return;
+      }
+      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
+      updateLista(r.text);
+      setShowModal(true);
+      return;
+    })
+    .catch((r) => {
+      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
+      updateLista(r);
+      setShowModal(true);
+      return;
+    });
+  }
+  const delFuncionario = async () => {
+    if(!confir) {
+      updateLista("Deseja realmente excluir esse funcionario?");
+      updateLista("Clique novamente no botão 'Excluir' para confirmar!");
+      setShowModal(true);
+      setConfir(true);
+      return;
+    }
+    return await fetch(`${baseURL}/Funcionario/${stateMat}`, {method: "DELETE"})
+      .then((r) => {
+        if (r.status === 204) {
+          updateLista("Funcionário excluído!");
+          setShowModal(true);
+          return;
+        }
+        if(r.status === 404) {
+          updateLista("Funcionaário não encontrado!");
+          updateLista(r.text);
+          setShowModal(true);
+          return;
+        }
+        updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
+        updateLista(r);
+        setShowModal(true);
+        return;
+      })
+      .catch((r) => {
+        updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
+        updateLista(r);
+        setShowModal(true);
+        return;
+      });
+  }
   return (
+    <>
+      {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
       <form className="form-control">
         <div className="form-group my-2">
           <label>Matrícula Light:</label>
@@ -25,9 +127,11 @@ export default function Edit()
           </select>
         </div>
         <div className="form-group py-2">
-          <input type="button" className="btn btn-primary btn-block" value="Enviar"/>
-          <input type="button" className="btn btn-danger btn-block" value="Excluir"/>
+          <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={editFuncionario}/>
+          <input type="button" className="btn btn-secondary btn-block" value="Voltar" onClick={() => {History('/Funcionario')}}/>
+          <input type="button" className="btn btn-danger btn-block" value="Excluir" onClick={delFuncionario}/>
         </div>
       </form>
+    </>
   );
 }
