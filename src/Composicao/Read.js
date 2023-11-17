@@ -6,8 +6,8 @@ export default function Read() {
   const [comp, setComp] = React.useState([]);
   const [dataStart, setDataStart] = React.useState(Date(Date.now()));
   const [dataStop, setDataStop] = React.useState(Date(Date.now()));
-  const [ativ, setAtiv] = React.useState("");
-  const [reg, setReg] = React.useState("");
+  const [ativ, setAtiv] = React.useState(Number.MAX_VALUE);
+  const [reg, setReg] = React.useState(Number.MAX_VALUE);
   React.useEffect(() => {
     async function getComposicoes()
     {
@@ -27,19 +27,19 @@ export default function Read() {
   return (
     <main className="card p-2 m-2">
     <div className="d-flex justify-content-around">
-      <Link to='Create'>Criar nova composição</Link>
+      <Link to='Create'>Criar composição</Link>
       <label>Data inicio:</label>
       <input type="date" value={dataStart} onChange={(d) => { setDataStart(d.target.value); }}/>
       <label>Data final:</label>
       <input type="date" value={dataStop} onChange={(d) => { setDataStop(d.target.value); }}/>
       <label>Tipo atividade:</label>
-      <select defaultValue={ativ} onChange={(e) => {setAtiv(e.target.value)}}>
-        <option value={""}>TODAS</option>
+      <select defaultValue={Number.MAX_VALUE} onChange={(e) => {setAtiv(e.target.value)}}>
+        <option value={Number.MAX_VALUE}>TODAS</option>
         {atividade.map((r, i) => ( <option value={i} key={i}>{r}</option> ))}
       </select>
       <label>Qual Regional:</label>
-      <select defaultValue={reg} onChange={(e) => {setReg(e.target.value)}}>
-        <option value={""}>TODAS</option>
+      <select defaultValue={Number.MAX_VALUE} onChange={(e) => {setReg(e.target.value)}}>
+        <option value={Number.MAX_VALUE}>TODAS</option>
         {regional.map((r, i) => ( <option value={i} key={i}>{r}</option> ))}
       </select>
     </div>
@@ -65,15 +65,17 @@ export default function Read() {
         </thead>
         <tbody>
           {comp.filter((c) => (
-            (new Date(c.dia) >= new Date(dataStart)) &&
-            (new Date(c.dia) <= new Date(dataStop))
+            ((new Date(c.dia) >= new Date(dataStart)) &&
+            (new Date(c.dia) <= new Date(dataStop)) &&
+            (ativ == Number.MAX_VALUE || c.atividade == ativ) &&
+            (reg == Number.MAX_VALUE || c.regional == reg))
           )).map((c) => (
             <tr scope="row" key={c.dia + c.recurso}>
               <td>{c.dia.substr(0, 10).split('-').reverse().join('/')}</td>
               <td>{c.adesivo}</td>
               <td>{c.placa}</td>
               <td>{c.recurso}</td>
-              <td>{atividade[Number(c.atividade)]}</td>
+              <td>{atividade[c.atividade]}</td>
               <td>{c.id_motorista}</td>
               <td>{c.motorista.split(" ", 1)[0]}</td>
               <td>{c.id_ajudante}</td>
@@ -81,7 +83,7 @@ export default function Read() {
               <td>{c.telefone}</td>
               <td>{c.id_supervisor}</td>
               <td>{c.supervisor.split(" ", 1)[0]}</td>
-              <td>{regional[Number(c.regional)]}</td>
+              <td>{regional[c.regional]}</td>
               <td>
                 <Link to="Edit" state={c}>Editar</Link>
               </td>
