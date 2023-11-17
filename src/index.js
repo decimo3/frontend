@@ -6,6 +6,7 @@ import Header from './_Shared/Header';
 import Upload from './Upload';
 import Startup from './Startup';
 import Funcionario from './Funcionario/Index';
+import Composicao from './Composicao/Index';
 
 export default function App(){
   return (
@@ -15,8 +16,8 @@ export default function App(){
         <Route exact path='/' element={<Startup/>} />
         <Route exact path='/Upload' element={<Upload/>} />
         <Route exact path='/Funcionario/*' element={<Funcionario/>} />
+        <Route exact path='/Composicao' element={<Composicao/>} />
         {/*
-          <Route exact path='/Composicao' element={<Composicao/>} />
           <Route exact path='/Relatorio' element={<Relatorio/>} />
           <Route path='*' element={<NotFound/>} />
         */}
