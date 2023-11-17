@@ -16,7 +16,7 @@ export default function App(){
         <Route exact path='/' element={<Startup/>} />
         <Route exact path='/Upload' element={<Upload/>} />
         <Route exact path='/Funcionario/*' element={<Funcionario/>} />
-        <Route exact path='/Composicao' element={<Composicao/>} />
+        <Route exact path='/Composicao/*' element={<Composicao/>} />
         {/*
           <Route exact path='/Relatorio' element={<Relatorio/>} />
           <Route path='*' element={<NotFound/>} />
