@@ -9,16 +9,15 @@ export default function Modal({ listaAvisos, onClose })
         <div className="modal-dialog" onClick={() => {closeModal();}}>
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Modal title</h5>
-              <button className="close-btn" onClick={() => {closeModal();}}>&times;</button>
+              <h5 className="modal-title px-4 pt-2">Aviso:</h5>
             </div>
             <hr/>
-            <div className="modal-body">
+            <div className="modal-body px-4">
               {listaAvisos.map((li, i) => (<p key={i} className="text-danger">{li}</p>))}
             </div>
             <hr/>
             <div className="modal-footer">
-            <button className="close-btn" onClick={() => {closeModal();}}>OK</button>
+              <button className="btn btn-secondary btn-block p-2 m-2" onClick={() => {closeModal();}}>OK</button>
             </div>
           </div>
         </div>
