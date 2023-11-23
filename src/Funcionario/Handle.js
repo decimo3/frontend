@@ -18,7 +18,7 @@ export default function Handle()
   const onCloseModal = () => {
     if(listaAvisos[0] == "Funcionário não encontrado!") History('/Funcionario');
     if(listaAvisos[0] == "Funcionário excluído!") History('/Funcionario');
-    if(listaAvisos[0] == "Cadastrado efetivado!") history('/Funcionario');
+    if(listaAvisos[0] == "Cadastrado efetivado!") History('/Funcionario');
     setlistaAvisos([]);
     setShowModal(false);
   }
