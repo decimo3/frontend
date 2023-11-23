@@ -10,9 +10,10 @@ export function isValidName(nom)
 export default class Funcionario
 {
   constructor(nom, mat, fun) {
-    this.colaborador = nom;
-    this.matricula = mat;
+    this.nome_colaborador = nom;
+    this.matricula = Number(mat);
     this.funcao = fun;
+    this.errors = [];
   }
   isValidFuncionario() {
     if(!isValidMatricula(this.matricula)) return false;
