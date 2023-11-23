@@ -1,8 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal";
-import { baseURL } from "../Environment";
-import Funcionario from './Model';
+import Funcionario, { funcoes } from './Model';
 import Requisicao, { errorMsg } from "../Requisicao";
 export default function Handle()
 {
@@ -41,11 +40,9 @@ export default function Handle()
     let verbo = state ? "PUT" : "POST";
     let param = state ? state.matricula : null;
     const res = await Requisicao("Funcionario", verbo, body, param);
-    console.dir(res);
     switch(res.status) {
       case 201: setlistaAvisos(["Funcionário cadastrado!"]); break;
       case 204: setlistaAvisos(["Funcionário atualizado!"]); break;
-      case 404: setlistaAvisos(["Funcionário não encontrado!"]); break;
       case 409:
         setlistaAvisos([
           "Matrícula informada está cadastrada com outro funcionário!",
@@ -65,31 +62,13 @@ export default function Handle()
       setConfir(true);
       return;
     }
-
-    return await fetch(`${baseURL}/Funcionario/${stateMat}`, {method: "DELETE"})
-      .then((r) => {
-        if (r.status === 204) {
-          updateLista("Funcionário excluído!");
-          setShowModal(true);
-          return;
-        }
-        if(r.status === 404) {
-          updateLista("Funcionaário não encontrado!");
-          updateLista(r.text);
-          setShowModal(true);
-          return;
-        }
-        updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-        updateLista(r);
-        setShowModal(true);
-        return;
-      })
-      .catch((r) => {
-        updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-        updateLista(r);
-        setShowModal(true);
-        return;
-      });
+    const res = await Requisicao("Funcionario", "DELETE", null, state.matricula);
+    switch(res.status) {
+      case 204: setlistaAvisos(["Funcionário excluído!"]); break;
+      case 404: setlistaAvisos(["Funcionário não encontrado!"]); break;
+      default: setlistaAvisos(errorMsg); break;
+    }
+    setShowModal(!showModal);
   }
   return (
     <>
@@ -105,9 +84,8 @@ export default function Handle()
         </div>
         <div className="form-group py-2">
           <label>Função do colaborador:</label>
-          <select value={stateFun} className="form-control" onChange={(e) => {setFun(e.target.value);}}>
-            <option value="0">Eletricista</option>
-            <option value="1">Supervisor</option>
+          <select value={stateFun} className="form-control" onChange={(e) => {setFun(Number(e.target.value));}}>
+          {funcoes.map((f, i) => ( <option key={i} value={i}>{f}</option> ))}
           </select>
         </div>
         <div className="form-group py-2">
