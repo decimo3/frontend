@@ -2,20 +2,23 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import { baseURL } from "../Environment";
-import { isValidName, isValidMatricula } from './Utils';
-export default function Edit()
+import { isValidName, isValidMatricula } from './Model';
+export default function Handle()
 {
-  const { state } = useLocation();
+  // variables and states declarations;
   const History = useNavigate();
+  const { state } = useLocation();
   const [stateMat, setMat] = React.useState(state.matricula);
   const [stateNom, setNom] = React.useState(state.nome_colaborador);
   const [stateFun, setFun] = React.useState(state.funcao);
   const [confir, setConfir] = React.useState(false);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
+    // hight level functions declarations;
   const onCloseModal = () => {
     if(listaAvisos[0] == "Funcionário não encontrado!") History('/Funcionario');
     if(listaAvisos[0] == "Funcionário excluído!") History('/Funcionario');
+    if(listaAvisos[0] == "Cadastrado efetivado!") history('/Funcionario');
     setlistaAvisos([]);
     setShowModal(false);
   }
