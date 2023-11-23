@@ -8,9 +8,9 @@ export default function Handle()
   // variables and states declarations;
   const History = useNavigate();
   const { state } = useLocation();
-  const [stateMat, setMat] = React.useState(state.matricula);
-  const [stateNom, setNom] = React.useState(state.nome_colaborador);
-  const [stateFun, setFun] = React.useState(state.funcao);
+  const [stateMat, setMat] = React.useState(state ? state.matricula : 0);
+  const [stateNom, setNom] = React.useState(state ? state.nome_colaborador : "");
+  const [stateFun, setFun] = React.useState(state ? state.funcao : 0);
   const [confir, setConfir] = React.useState(false);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
