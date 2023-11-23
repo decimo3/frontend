@@ -6,16 +6,16 @@ export const errorMsg = [
   <a target="_blank" href='https://api.whatsapp.com/send?phone=5521975429768'>WhatsApp MestreRuan</a>
 ];
 export default async function Requisicao(locate, verbo="GET", data=null, param=null) {
-  let url = new URL(locate, baseURL);
-  let body = data ? JSON.stringify(data) : null;
-  if(param) { url.searchParams.append("id", param) }
+  let local = param ? `${locate}/${param}` : locate;
+  let url = new URL(local, baseURL);
   const req = {
     method: verbo,
-    body: body,
+    body: data,
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
     })
   }
+  console.dir(req);
   try {
     let r = await fetch(url, req);
     return r;
