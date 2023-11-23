@@ -16,8 +16,10 @@ export default class Funcionario
     this.errors = [];
   }
   isValidFuncionario() {
-    if(!isValidMatricula(this.matricula)) return false;
-    if(!isValidName(this.colaborador)) return false;
-    return true;
+    if(!isValidMatricula(this.matricula))
+      this.errors.push("Matrícula inserida não é válida!");
+    if(!isValidName(this.nome_colaborador))
+      this.errors.push("Nome inserido não é válido!");
+    return (this.errors.length === 0);
   }
 }
