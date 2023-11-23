@@ -2,7 +2,8 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import { baseURL } from "../Environment";
-import { isValidName, isValidMatricula } from './Model';
+import Funcionario from './Model';
+import Requisicao, { errorMsg } from "../Requisicao";
 export default function Handle()
 {
   // variables and states declarations;
@@ -18,7 +19,8 @@ export default function Handle()
   const onCloseModal = () => {
     if(listaAvisos[0] == "Funcionário não encontrado!") History('/Funcionario');
     if(listaAvisos[0] == "Funcionário excluído!") History('/Funcionario');
-    if(listaAvisos[0] == "Cadastrado efetivado!") History('/Funcionario');
+    if(listaAvisos[0] == "Funcionário atualizado!") History('/Funcionario');
+    if(listaAvisos[0] == "Funcionário cadastrado!") History('/Funcionario');
     setlistaAvisos([]);
     setShowModal(false);
   }
@@ -27,64 +29,43 @@ export default function Handle()
     newarr.push(msg);
     setlistaAvisos(newarr);
   }
-  const editFuncionario = async () => {
-    if(!isValidName(stateNom))
+  const sendFuncionario = async () => {
+    const funcionario = new Funcionario(stateNom, stateMat, stateFun);
+    if(!funcionario.isValidFuncionario())
     {
-      updateLista("O nome digitado não é válido!");
-    }
-    if(!isValidMatricula(stateMat))
-    {
-      updateLista("O número de matrícula inserida não é válida!");
-    }
-    if(listaAvisos.length > 0) {
+      setlistaAvisos(funcionario.errors);
       setShowModal(true);
       return;
     }
-    const data = JSON.stringify({
-      matricula: stateMat,
-      nome_colaborador: stateNom,
-      funcao: Number(stateFun)
-    })
-    const req = {
-      method: "PUT",
-      body: data,
-      headers: new Headers({
-        'Content-Type': 'application/json; charset=UTF-8'
-      })
+    let body = JSON.stringify(funcionario);
+    let verbo = state ? "PUT" : "POST";
+    let param = state ? state.matricula : null;
+    const res = await Requisicao("Funcionario", verbo, body, param);
+    console.dir(res);
+    switch(res.status) {
+      case 201: setlistaAvisos(["Funcionário cadastrado!"]); break;
+      case 204: setlistaAvisos(["Funcionário atualizado!"]); break;
+      case 404: setlistaAvisos(["Funcionário não encontrado!"]); break;
+      case 409:
+        setlistaAvisos([
+          "Matrícula informada está cadastrada com outro funcionário!",
+          "Verifique o funcionário já existente com essa matrícula!"
+        ]); break;
+      default: setlistaAvisos(errorMsg); break;
     }
-    const res = await fetch(`${baseURL}/Funcionario/${state.matricula}`, req)
-    .then((r) => {
-      if (r.status === 204) {
-        updateLista("Funcionário atualizado!");
-        setShowModal(true);
-        return;
-      }
-      if(r.status === 404) {
-        updateLista("Funcionário não encontrado!");
-        updateLista(r.text);
-        setShowModal(true);
-        return;
-      }
-      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-      updateLista(r.text);
-      setShowModal(true);
-      return;
-    })
-    .catch((r) => {
-      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-      updateLista(r);
-      setShowModal(true);
-      return;
-    });
+    setShowModal(!showModal);
   }
   const delFuncionario = async () => {
     if(!confir) {
-      updateLista("Deseja realmente excluir esse funcionario?");
-      updateLista("Clique novamente no botão 'Excluir' para confirmar!");
+      setlistaAvisos([
+        "Deseja realmente excluir esse funcionario?",
+        "Clique novamente no botão 'Excluir' para confirmar!"
+      ]);
       setShowModal(true);
       setConfir(true);
       return;
     }
+
     return await fetch(`${baseURL}/Funcionario/${stateMat}`, {method: "DELETE"})
       .then((r) => {
         if (r.status === 204) {
@@ -130,9 +111,9 @@ export default function Handle()
           </select>
         </div>
         <div className="form-group py-2">
-          <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={editFuncionario}/>
+          <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={sendFuncionario}/>
           <input type="button" className="btn btn-secondary btn-block" value="Voltar" onClick={() => {History('/Funcionario')}}/>
-          <input type="button" className="btn btn-danger btn-block" value="Excluir" onClick={delFuncionario}/>
+          {state && <input type="button" className="btn btn-danger btn-block" value="Excluir" onClick={delFuncionario}/>}
         </div>
       </form>
     </>
