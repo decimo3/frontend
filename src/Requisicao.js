@@ -1,5 +1,5 @@
 import React from "react";
-const baseURL = "http://localhost:5131";
+const baseURL = "http://192.168.29.158:5131";
 export const errorMsg = [
   "Algum problema no servidor, tente novamente mais tarde!",
   "Se o problema persistir, contacte o administrador do sistema.",
