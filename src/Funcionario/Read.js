@@ -1,22 +1,33 @@
 import React from "react";
-import { baseURL } from "../Environment";
-import { Link } from "react-router-dom";
-import { funcoes } from "./Utils";
+import { Link, useNavigate } from "react-router-dom";
+import { funcoes } from "./Model";
+import Requisicao, { errorMsg } from "../Requisicao";
+import Modal from "../Modal";
 export default function Read()
 {
+  const History = useNavigate();
   const [func, setFunc] = React.useState([]);
+  const [showModal, setShowModal] = React.useState(false);
+  const onCloseModal = () => {
+    History('/');
+  }
   React.useEffect(() => {
     async function getFuncionarios()
     {
-      const data = await fetch(`${baseURL}/Funcionario`);
-      const funcionarios = await data.json();
-      setFunc(funcionarios);
+      let funcionarios = await Requisicao("Funcionario");
+      if(!funcionarios.ok) {
+        setShowModal(true);
+      }
+      else {
+        setFunc(await funcionarios.json());
+      }
     }
     getFuncionarios();
   }, []);
   if (func.length === 0) {
     return (
       <div className="text-center">
+        {showModal && <Modal listaAvisos={errorMsg} onClose={onCloseModal}/>}
         Carregando...
       </div>
     );
