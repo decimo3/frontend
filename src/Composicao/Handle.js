@@ -1,9 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { atividade, regional } from './Utils';
-import { baseURL } from "../Environment";
+import { atividade, regional } from './Model';
 import Modal from "../Modal";
-export default function Edit()
+export default function Handle()
 {
   const { state } = useLocation();
   const History = useNavigate();
