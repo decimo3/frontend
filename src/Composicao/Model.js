@@ -53,6 +53,8 @@ export default class Composicao {
       this.errors.push("A matrícula do ajudante não é válida!");
     if (!this.isValidMatricula(this.id_supervisor))
       this.errors.push("A matrícula do supervisor não é válida!");
+    if (this.id_motorista == this.id_ajudante)
+      this.errors.push("A matrícula do motorista e ajudante não podem ser iguais!");
     return (this.errors.length === 0);
   }
 }
