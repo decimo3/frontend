@@ -1,5 +1,5 @@
 import React from "react";
-const baseURL = "http://192.168.29.158:5131";
+export const baseURL = "http://192.168.29.158:5131";
 export const errorMsg = [
   "Algum problema no servidor, tente novamente mais tarde!",
   "Se o problema persistir, contacte o administrador do sistema.",
@@ -16,6 +16,22 @@ export default async function Requisicao(locate, verbo="GET", data=null, param=n
     })
   }
   console.dir(req);
+  try {
+    let r = await fetch(url, req);
+    return r;
+  }
+  catch {
+    return { ok: false };
+  }
+}
+export async function Carregar(locate, file) {
+  let url = new URL(locate, baseURL);
+  const formData = new FormData();
+  formData.append('file', file);
+  const req = {
+    method: 'POST',
+    body: formData,
+  }
   try {
     let r = await fetch(url, req);
     return r;
