@@ -6,25 +6,27 @@ export default function Handle()
 {
   const { state } = useLocation();
   const History = useNavigate();
-  const [stateDia, setDia] = React.useState(state.dia);
-  const [stateAdesivo, setAdesivo] = React.useState(state.adesivo);
-  const [statePlaca, setPlaca] = React.useState(state.placa);
-  const [stateRecurso, setRecurso] = React.useState(state.recurso);
-  const [stateAtividade, setAtividade] = React.useState(state.atividade);
-  const [stateMat1, setMat1] = React.useState(state.id_motorista);
-  const [stateMat2, setMat2] = React.useState(state.id_ajudante);
-  const [stateElet1, setElet1] = React.useState(state.motorista);
-  const [stateElet2, setElet2] = React.useState(state.ajudante);
-  const [stateTel, setTel] = React.useState(state.telefone);
-  const [stateMat3, setMat3] = React.useState(state.id_supervisor);
-  const [stateSup, setSup] = React.useState(state.supervisor);
-  const [stateReg, setReg] = React.useState(state.regional);
+  const [stateDia, setDia] = React.useState(state ? state.dia : Date(Date.now()));
+  const [stateAdesivo, setAdesivo] = React.useState(state ? state.adesivo : 0);
+  const [statePlaca, setPlaca] = React.useState(state ? state.placa : "");
+  const [stateRecurso, setRecurso] = React.useState(state ? state.recurso : "");
+  const [stateAtividade, setAtividade] = React.useState(state ? state.atividade : 0);
+  const [stateMat1, setMat1] = React.useState(state ? state.id_motorista : 0);
+  const [stateMat2, setMat2] = React.useState(state ? state.id_ajudante : 0);
+  const [stateElet1, setElet1] = React.useState(state ? state.motorista : "Insira a matrícula que o nome será carregado automáticamente");
+  const [stateElet2, setElet2] = React.useState(state ? state.ajudante : "Insira a matrícula que o nome será carregado automáticamente");
+  const [stateTel, setTel] = React.useState(state ? state.telefone : 0);
+  const [stateMat3, setMat3] = React.useState(state ? state.id_supervisor : 0);
+  const [stateSup, setSup] = React.useState(state ? state.supervisor : "Insira a matrícula que o nome será carregado automáticamente");
+  const [stateReg, setReg] = React.useState(state ? state.regional : 0);
   const [confir, setConfir] = React.useState(false);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const onCloseModal = () => {
     if(listaAvisos[0] == "Composição não encontrada!") History('/Composicao');
     if(listaAvisos[0] == "Composição excluída!") History('/Composicao');
+    if(listaAvisos[0] == "Composição cadastrada!") History('/Composicao');
+    if(listaAvisos[0] == "Composição atualizada!") History('/Composicao');
     setlistaAvisos([]);
     setShowModal(false);
   }
