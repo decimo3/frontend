@@ -1,7 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { atividade, regional } from './Model';
+import Composicao, { atividade, regional } from './Model';
 import Modal from "../Modal";
+import Requisicao, { errorMsg } from "../Requisicao";
 export default function Handle()
 {
   const { state } = useLocation();
@@ -30,92 +31,80 @@ export default function Handle()
     setlistaAvisos([]);
     setShowModal(false);
   }
-  const updateLista = (msg) => {
-    let newarr = listaAvisos;
-    newarr.push(msg);
-    setlistaAvisos(newarr);
+  const nomeColaborador = async (mat, campo) => {
+    let valor = "";
+    if(mat.length == 7) {
+      const res = await Requisicao("Funcionario", "GET", null, Number(mat));
+      if(res.status === undefined) {
+        setlistaAvisos(errorMsg);
+        setShowModal(!showModal);
+        valor = "Não foi possível consultar o colaborador";
+      }
+      else {
+        if(res.status != 200) {
+          valor = "A matrícula não foi encontrada!";
+        }
+        else {
+          let f = await res.json();
+          valor = f.nome_colaborador;
+        }
+      }
+    }
+    else {
+      valor = "A matrícula inserida é inválida!";
+    }
+    switch(campo) {
+      case 'mot': setElet1(valor); break;
+      case 'aju': setElet2(valor); break;
+      case 'sup': setSup(valor); break;
+      default:
+        setlistaAvisos(errorMsg);
+        setShowModal(!showModal);
+      break;
+    }
   }
   // TODO: =====================================
-  const editComposicao = async () => {
-    if(true)
+  const sendComposicao = async () => {
+    let composicao = new Composicao(stateDia, stateAdesivo, statePlaca, stateRecurso, stateAtividade, stateElet1, stateMat1, stateElet2, stateMat2, stateTel, stateMat3, stateSup, stateReg);
+    if(!composicao.isValidComposicao())
     {
-      updateLista("O nome digitado não é válido!");
-    }
-    if(true)
-    {
-      updateLista("O número de matrícula inserida não é válida!");
-    }
-    if(listaAvisos.length > 0) {
-      setShowModal(true);
+      setlistaAvisos(composicao.errors);
+      setShowModal(!showModal);
       return;
     }
-    const data = JSON.stringify({
-      dia: stateDia
-    })
-    const req = {
-      method: "PUT",
-      body: data,
-      headers: new Headers({
-        'Content-Type': 'application/json; charset=UTF-8'
-      })
+    let body = JSON.stringify(composicao);
+    let verbo = state ? "PUT" : "POST";
+    let param = state ? `${state.dia}${state.recurso}` : null;
+    const res = await Requisicao("Funcionario", verbo, body, param);
+    switch(res.status) {
+      case 201: setlistaAvisos(["Composição cadastrada!"]); break;
+      case 204: setlistaAvisos(["Composição atualizada!"]); break;
+      case 409:
+        setlistaAvisos([
+          "O recurso informado já está cadastrado nesse dia!",
+          "Verifique a composição desse dia para esse recurso!"
+        ]); break;
+      default: setlistaAvisos(errorMsg); break;
     }
-    const res = await fetch(`${baseURL}/Composicao`, req)
-    .then((r) => {
-      if (r.status === 204) {
-        updateLista("Composição atualizada!");
-        setShowModal(true);
-        return;
-      }
-      if(r.status === 404) {
-        updateLista("Composição não encontrado!");
-        updateLista(r.text);
-        setShowModal(true);
-        return;
-      }
-      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-      updateLista(r.text);
-      setShowModal(true);
-      return;
-    })
-    .catch((r) => {
-      updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-      updateLista(r);
-      setShowModal(true);
-      return;
-    });
+    setShowModal(!showModal);
   }
   const delComposicao = async () => {
     if(!confir) {
-      updateLista("Deseja realmente excluir essa composição?");
-      updateLista("Clique novamente no botão 'Excluir' para confirmar!");
+      setlistaAvisos([
+        "Deseja realmente excluir essa composição?",
+        "Clique novamente no botão 'Excluir' para confirmar!"
+      ]);
       setShowModal(true);
       setConfir(true);
       return;
     }
-    return await fetch(`${baseURL}/Composicao/${stateDia}${stateRecurso}`, {method: "DELETE"})
-      .then((r) => {
-        if (r.status === 204) {
-          updateLista("Composição excluída!");
-          setShowModal(true);
-          return;
-        }
-        if(r.status === 404) {
-          updateLista("Composição não encontrado!");
-          updateLista(r.text);
-          setShowModal(true);
-          return;
-        }
-        updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-        updateLista(r);
-        setShowModal(true);
-        return;
-      })
-      .catch((r) => {
-        updateLista("Algo de errado aconteceu. Tente novamente ou verifique com o administrador!");
-        updateLista(r);
-        setShowModal(true);
-        return;
-      });
+    const res = await Requisicao("Composicao", "DELETE", null, `${state.matricula}${state.dia}`);
+    switch(res.status) {
+      case 204: setlistaAvisos(["Composição excluída!"]); break;
+      case 404: setlistaAvisos(["Composição não encontrada!"]); break;
+      default: setlistaAvisos(errorMsg); break;
+    }
+    setShowModal(!showModal);
   }
   return (
     <>
