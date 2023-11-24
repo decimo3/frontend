@@ -7,7 +7,7 @@ export default function Handle()
 {
   const { state } = useLocation();
   const History = useNavigate();
-  const [stateDia, setDia] = React.useState(state ? state.dia : Date(Date.now()));
+  const [stateDia, setDia] = React.useState(state ? state.dia : "");
   const [stateAdesivo, setAdesivo] = React.useState(state ? state.adesivo : 0);
   const [statePlaca, setPlaca] = React.useState(state ? state.placa : "");
   const [stateRecurso, setRecurso] = React.useState(state ? state.recurso : "");
@@ -74,8 +74,8 @@ export default function Handle()
     }
     let body = JSON.stringify(composicao);
     let verbo = state ? "PUT" : "POST";
-    let param = state ? `${state.dia}${state.recurso}` : null;
-    const res = await Requisicao("Funcionario", verbo, body, param);
+    let param = state ? `${state.dia}/${state.recurso}` : null;
+    const res = await Requisicao("Composicao", verbo, body, param);
     switch(res.status) {
       case 201: setlistaAvisos(["Composição cadastrada!"]); break;
       case 204: setlistaAvisos(["Composição atualizada!"]); break;
@@ -98,7 +98,7 @@ export default function Handle()
       setConfir(true);
       return;
     }
-    const res = await Requisicao("Composicao", "DELETE", null, `${state.matricula}${state.dia}`);
+    const res = await Requisicao("Composicao", "DELETE", null, `${state.dia}/${state.recurso}`);
     switch(res.status) {
       case 204: setlistaAvisos(["Composição excluída!"]); break;
       case 404: setlistaAvisos(["Composição não encontrada!"]); break;
@@ -113,7 +113,7 @@ export default function Handle()
         <div className="row py-2">
           <div className="form-group col-4">
             <label>Dia:</label>
-            <input className="form-control" type="data" value={stateDia} onChange={(e) => {setDia(e.target.value)}}/>
+            <input type="date" className="form-control" value={stateDia} onChange={(e) => {setDia(e.target.value)}}/>
           </div>
           <div className="form-group col-4">
             <label>Atividade:</label>
