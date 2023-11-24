@@ -38,7 +38,7 @@ export default function Read() {
   }
   return (
     <>
-    <Filters links={[<Link to='Create'>Criar composição</Link>]} updateVars={onUpdateVars}/>
+    <Filters links={[<Link to='Create'>Criar composição</Link>,<Link to='Send'>Enviar Composição</Link>]} updateVars={onUpdateVars}/>
     <main className="card p-2 m-2">
       <table className="table table-hover">
         <thead>
