@@ -2,7 +2,7 @@ export const atividade = ["CORTE" , "RELIGA", "AVANÇADO", "CAMINHÃO", "EMERGÊ
 export const regional = ["BAIXADA", "OESTE"];
 export default class Composicao {
   constructor(dia, adesivo, placa, recurso, ativ, ele1, mat1, ele2, mat2, tel, mat3, sup, reg) {
-    this.dia = Date(dia);
+    this.dia = dia;
     this.adesivo = Number(adesivo);
     this.placa = placa;
     this.recurso = recurso;
@@ -33,7 +33,7 @@ export default class Composicao {
     return (RegExp(/^([A-Z]{4,})(?: - [A-z]{3,})?( [-|–] Equipe )([0-9]{3})$/).test(this.recurso));
   }
   isValidComposicao() {
-    if(!isNaN(this.dia.getTime()))
+    if(!isNaN(new Date(this.dia).getTime))
       this.errors.push("A data não pode ser reconhecida!");
     if (!this.isValidRecurso())
       this.errors.push("O recurso digitado não é válido!");
