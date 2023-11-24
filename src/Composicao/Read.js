@@ -1,49 +1,45 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-import { baseURL } from "../Environment";
-import { atividade, regional } from './Utils';
+import { Link, useNavigate } from 'react-router-dom';
+import { atividade, regional } from './Model';
+import Filters from "../_Shared/Filters";
+import Requisicao, { errorMsg } from "../Requisicao";
+import Modal from "../Modal";
 export default function Read() {
+  const History = useNavigate();
   const [comp, setComp] = React.useState([]);
   const [dataStart, setDataStart] = React.useState(Date(Date.now()));
   const [dataStop, setDataStop] = React.useState(Date(Date.now()));
   const [ativ, setAtiv] = React.useState(Number.MAX_VALUE);
   const [reg, setReg] = React.useState(Number.MAX_VALUE);
+  const [showModal, setShowModal] = React.useState(false);
+  const onCloseModal = () => { History('/'); }
+  const onUpdateVars = (vars) => {
+    setDataStart(vars[0]);
+    setDataStop(vars[1]);
+    setAtiv(vars[2]);
+    setReg(vars[3]);
+  }
   React.useEffect(() => {
     async function getComposicoes()
     {
-      const data = await fetch(`${baseURL}/Composicao`);
-      const composicoes = await data.json();
-      setComp(composicoes);
+      const data = await Requisicao("Composicao");
+      if(!data.ok) setShowModal(true);
+      else setComp(await data.json());
     }
     getComposicoes();
   }, []);
   if (comp.length === 0) {
     return (
       <div className="text-center">
+        {showModal && <Modal listaAvisos={errorMsg} onClose={onCloseModal}/>}
         Carregando...
       </div>
     );
   }
   return (
+    <>
+    <Filters links={[<Link to='Create'>Criar composição</Link>]} updateVars={onUpdateVars}/>
     <main className="card p-2 m-2">
-    <div className="d-flex justify-content-around">
-      <Link to='Create'>Criar composição</Link>
-      <label>Data inicio:</label>
-      <input type="date" value={dataStart} onChange={(d) => { setDataStart(d.target.value); }}/>
-      <label>Data final:</label>
-      <input type="date" value={dataStop} onChange={(d) => { setDataStop(d.target.value); }}/>
-      <label>Tipo atividade:</label>
-      <select defaultValue={Number.MAX_VALUE} onChange={(e) => {setAtiv(e.target.value)}}>
-        <option value={Number.MAX_VALUE}>TODAS</option>
-        {atividade.map((r, i) => ( <option value={i} key={i}>{r}</option> ))}
-      </select>
-      <label>Qual Regional:</label>
-      <select defaultValue={Number.MAX_VALUE} onChange={(e) => {setReg(e.target.value)}}>
-        <option value={Number.MAX_VALUE}>TODAS</option>
-        {regional.map((r, i) => ( <option value={i} key={i}>{r}</option> ))}
-      </select>
-    </div>
-    <hr/>
       <table className="table table-hover">
         <thead>
           <tr>
@@ -92,5 +88,6 @@ export default function Read() {
         </tbody>
       </table>
     </main>
+    </>
   );
 }
