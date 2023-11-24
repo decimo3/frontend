@@ -117,7 +117,9 @@ export default function Handle()
           </div>
           <div className="form-group col-4">
             <label>Atividade:</label>
-            <input className="form-control" type="text" value={stateAtividade} onChange={(e) => {setAtividade(e.target.value)}}/>
+            <select value={stateAtividade} className="form-control" onChange={(e) => { setAtividade(e.target.value); }}>
+              {atividade.map((a, i) => ( <option value={i} key={i}>{a}</option> ))}
+            </select>
           </div>
           <div className="form-group col-4">
             <label>Recurso:</label>
@@ -141,41 +143,43 @@ export default function Handle()
         <div className="row py-2">
           <div className="form-group col-4">
             <label>Mat. 1:</label>
-            <input className="form-control" type="number" value={stateMat1} onChange={(e) => {setMat1(e.target.value)}}/>
+            <input className="form-control" type="number" value={stateMat1} onChange={(e) => { setMat1(e.target.value); nomeColaborador(e.target.value, "mot"); }}/>
           </div>
           <div className="form-group col-8">
             <label>Motorista:</label>
-            <input className="form-control" type="text" value={stateElet1} onChange={(e) => {setElet1(e.target.value)}}/>
+            <input className="form-control" type="text" value={stateElet1} disabled/>
           </div>
         </div>
         <div className="row py-2">
           <div className="form-group col-4">
             <label>Mat. 2:</label>
-            <input className="form-control" type="number" value={stateMat2} onChange={(e) => {setMat2(e.target.value)}}/>
+            <input className="form-control" type="number" value={stateMat2} onChange={(e) => { setMat2(e.target.value); nomeColaborador(e.target.value, "aju"); }}/>
           </div>
           <div className="form-group col-8">
             <label>Ajudante:</label>
-            <input className="form-control" type="text" value={stateElet2} onChange={(e) => {setElet2(e.target.value)}}/>
+            <input className="form-control" type="text" value={stateElet2} disabled/>
           </div>
         </div>
         <div className="row py-2">
           <div className="form-group col-4">
             <label>Mat. Sup.:</label>
-            <input className="form-control" type="number" value={stateMat3} onChange={(e) => {setMat3(e.target.value)}}/>
+            <input className="form-control" type="number" value={stateMat3} onChange={(e) => { setMat3(e.target.value); nomeColaborador(e.target.value, "sup"); }}/>
           </div>
           <div className="form-group col-8">
             <label>Supervisor:</label>
-            <input className="form-control" type="text" value={stateSup} onChange={(e) => {setSup(e.target.value)}}/>
+            <input className="form-control" type="text" value={stateSup} disabled/>
           </div>
         </div>
         <div className="form-group">
           <label>Regional:</label>
-          <input className="form-control" type="text" value={stateReg} onChange={(e) => {setReg(e.target.value)}}/>
+          <select value={stateReg} className="form-control" onChange={(e) => { setReg(e.target.value); }}>
+              {regional.map((a, i) => ( <option value={i} key={i}>{a}</option> ))}
+            </select>
         </div>
         <div className="form-group py-2">
-          <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={editComposicao}/>
+          <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={sendComposicao}/>
           <input type="button" className="btn btn-secondary btn-block" value="Voltar" onClick={() => {History('/Composicao')}}/>
-          <input type="button" className="btn btn-danger btn-block" value="Excluir" onClick={delComposicao}/>
+          {state && <input type="button" className="btn btn-danger btn-block" value="Excluir" onClick={delComposicao}/>}
         </div>
       </form>
     </>
