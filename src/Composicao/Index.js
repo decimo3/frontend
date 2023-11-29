@@ -10,6 +10,7 @@ export default function Composicao() {
       <Route path="/Edit" element={<Handle/>}/>
       <Route path="/Create" element={<Handle/>}/>
       <Route path="/Send" element={<Send/>}/>
+      <Route path="/Result" element={<Read/>}/>
     </Routes>
   );
 }
