@@ -8,6 +8,7 @@ export default function Send() {
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const onCloseModal = () => {
+    if(listaAvisos[0] == "Composição enviada com sucesso!") History('/Composicao');
     setlistaAvisos([]);
     setFile();
     setShowModal(false);
@@ -21,8 +22,10 @@ export default function Send() {
     const res = await Carregar("Composicao", file);
     if(res.status == undefined) setlistaAvisos(errorMsg);
     else if (res.status == 422) {
-      let erros = await res.json();
-      History('../Result', {state: erros});
+      History('../Result', {state: await res.json()});
+    }
+    else if(res.status === 200) {
+      setlistaAvisos(["Composição enviada com sucesso!"]);
     }
     else setlistaAvisos([await res.text()]);
     setShowModal(true);
