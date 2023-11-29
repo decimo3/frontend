@@ -83,7 +83,7 @@ export default function Read() {
             (reg == Number.MAX_VALUE || c.regional == reg)))
           )) */}
           {comp.map((c) => (
-            <tr scope="row" key={c.dia + c.recurso}>
+            <tr scope="row" key={c.dia + c.recurso} className={(c.validacao.length > 0) ? "text-danger" : ""}>
               <td>{c.dia.substr(0, 10).split('-').reverse().join('/')}</td>
               <td>{c.adesivo}</td>
               <td>{c.placa}</td>
