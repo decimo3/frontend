@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
-import Requisicao from "../Requisicao";
+import { Carregar, errorMsg } from "../Requisicao";
 export default function Send() {
   const [file, setFile] = React.useState();
+  const History = useNavigate();
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const onCloseModal = () => {
@@ -16,10 +18,14 @@ export default function Send() {
       setShowModal(true);
       return;
     }
-    const formData = new FormData();
-    formData.append('file', file);
-    const res = await Requisicao("Composicao", "POST", formData);
-    // TODO: processar resultados
+    const res = await Carregar("Composicao", file);
+    if(res.status == undefined) setlistaAvisos(errorMsg);
+    else if (res.status == 422) {
+      let erros = await res.json();
+      History('../Result', {state: erros});
+    }
+    else setlistaAvisos([await res.text()]);
+    setShowModal(true);
   }
   return (
     <>
