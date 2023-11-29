@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Composicao, { atividade, regional } from './Model';
 import Modal from "../Modal";
-import Requisicao, { errorMsg } from "../Requisicao";
+import { Requisicao, errorMsg } from "../Requisicao";
 export default function Handle()
 {
   const { state } = useLocation();

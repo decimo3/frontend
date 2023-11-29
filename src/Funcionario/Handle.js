@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import Funcionario, { funcoes } from './Model';
-import Requisicao, { errorMsg } from "../Requisicao";
+import { Requisicao, errorMsg } from "../Requisicao";
 export default function Handle()
 {
   // variables and states declarations;

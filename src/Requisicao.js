@@ -1,11 +1,11 @@
 import React from "react";
-export const baseURL = "http://192.168.29.158:5131";
+export const baseURL = "http://localhost:5131";
 export const errorMsg = [
   "Algum problema no servidor, tente novamente mais tarde!",
   "Se o problema persistir, contacte o administrador do sistema.",
   <a target="_blank" href='https://api.whatsapp.com/send?phone=5521975429768'>WhatsApp MestreRuan</a>
 ];
-export default async function Requisicao(locate, verbo="GET", data=null, param=null) {
+export async function Requisicao(locate, verbo="GET", data=null, param=null) {
   let local = param ? `${locate}/${param}` : locate;
   let url = new URL(local, baseURL);
   const req = {

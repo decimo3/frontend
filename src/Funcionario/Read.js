@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { funcoes } from "./Model";
-import Requisicao, { errorMsg } from "../Requisicao";
+import { Requisicao, errorMsg } from "../Requisicao";
 import Modal from "../Modal";
 export default function Read()
 {
