@@ -35,6 +35,8 @@ export default function Read() {
   React.useEffect(() => {
     console.dir(state); 
     if (state) {
+      setlistaAvisos(["Há erros no preenchimento da composição!"]);
+      setShowModal(!showModal);
       setComp(state);
     }
     else {
