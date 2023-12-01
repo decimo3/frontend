@@ -7,6 +7,7 @@ export default function Read()
 {
   const History = useNavigate();
   const [func, setFunc] = React.useState([]);
+  const [msg, setMsg] = React.useState("Carregando...");
   const [showModal, setShowModal] = React.useState(false);
   const onCloseModal = () => {
     History('/');
@@ -19,7 +20,9 @@ export default function Read()
         setShowModal(true);
       }
       else {
-        setFunc(await funcionarios.json());
+        let f = await funcionarios.json();
+        if(f.length == 0) setMsg("Não há funcionários!");
+        setFunc(f);
       }
     }
     getFuncionarios();
@@ -28,7 +31,7 @@ export default function Read()
     return (
       <div className="text-center">
         {showModal && <Modal listaAvisos={errorMsg} onClose={onCloseModal}/>}
-        Carregando...
+        {msg}
       </div>
     );
   }
