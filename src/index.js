@@ -4,8 +4,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from './_Shared/Footer';
 import Header from './_Shared/Header';
 import Startup from './Startup';
+import Relatorio from './Relatorio';
 import Funcionario from './Funcionario/Index';
 import Composicao from './Composicao/Index';
+import NotFound from './NotFound';
 
 export default function App(){
   return (
@@ -15,10 +17,8 @@ export default function App(){
         <Route exact path='/' element={<Startup/>} />
         <Route exact path='/Funcionario/*' element={<Funcionario/>} />
         <Route exact path='/Composicao/*' element={<Composicao/>} />
-        {/*
-          <Route exact path='/Relatorio' element={<Relatorio/>} />
-          <Route path='*' element={<NotFound/>} />
-        */}
+        <Route exact path='/Relatorio' element={<Relatorio/>} />
+        <Route path='*' element={<NotFound/>} />
       </Routes>
       <Footer /> 
     </BrowserRouter>
