@@ -1,16 +1,21 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 import { Requisicao, Carregar, errorMsg } from './Requisicao';
 import Modal from "./Modal";
+import Espera from "./Espera";
 export default function Relatorio()
 {
+  const History = useNavigate();
   const [rel, setRel] = React.useState([]);
   const [msg, setMsg] = React.useState("Carregando...");
   const [file, setFile] = React.useState();
   const [confir, setConfir] = React.useState(null);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
+  const [showWait, setShowWait] = React.useState(false);
+  const [status, setStatus] = React.useState();
   const onCloseModal = () => {
-    setShowModal(!showModal);
+    History('/Relatorio');
   }
   React.useEffect(() => {
     async function getRelatorios() {
@@ -26,13 +31,14 @@ export default function Relatorio()
       }
     }
     getRelatorios();
-  }, []);
+  }, [status]);
   const sendRelatorio = async () => {
     if(!file) {
       setlistaAvisos(["Necessário escolher algum arquivo válido!"]);
       setShowModal(!showModal);
       return;
     }
+    setShowWait(!showWait);
     const res = await Carregar("Servico", file);
     switch(res.status) {
       case undefined: setlistaAvisos(errorMsg); break;
@@ -40,10 +46,26 @@ export default function Relatorio()
       case 201: setlistaAvisos(["Relatório enviado!"]); break;
       default: setlistaAvisos([await res.text()]); break;
     }
-    setShowModal(true);
+    setShowWait(showWait);
+    setShowModal(!showModal);
+    setStatus(!status);
   }
   const delRelatorio = async (arg) => {
-    if(!confir) {
+    if(confir == arg) {
+      setShowWait(!showWait);
+      const res = await Requisicao("Servico", "DELETE", null, arg);
+      switch(res.status) {
+        case undefined: setlistaAvisos(errorMsg); break;
+        case 204: setlistaAvisos(["Relatório excluído!"]); break;
+        case 404: setlistaAvisos(["Relatório não encontrado!"]); break;
+        default: setlistaAvisos(errorMsg); break;
+      }
+      setShowWait(showWait);
+      setShowModal(!showModal);
+      setStatus(!status);
+      return;
+    }
+    if(confir != arg) {
       setlistaAvisos([
         "Deseja realmente excluir esse relatório?",
         "Clique novamente no botão 'Excluir' para confirmar!"
@@ -52,14 +74,6 @@ export default function Relatorio()
       setConfir(arg);
       return;
     }
-    const res = await Requisicao("Servico", "DELETE", null, arg);
-    switch(res.status) {
-      case undefined: setlistaAvisos(errorMsg); break;
-      case 204: setlistaAvisos(["Relatório excluído!"]); break;
-      case 404: setlistaAvisos(["Relatório não encontrado!"]); break;
-      default: setlistaAvisos(errorMsg); break;
-    }
-    setShowModal(!showModal);
   }
   if (rel.length === 0) {
     return (
@@ -80,6 +94,7 @@ export default function Relatorio()
   }
   return (
     <>
+    {showWait && <Espera/>}
     {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
     <div className="card p-2 m-2">
       <div className="input-group">
@@ -96,22 +111,23 @@ export default function Relatorio()
             <th scope="col">Nome arquivo:</th>
             <th scope="col">Qnt. recursos:</th>
             <th scope="col">Qnt. serviços:</th>
-            <th scope="col"></th>
+            <th scope="col">Opções:</th>
           </tr>
         </thead>
         <tbody>
-          {rel.map((r) => (
+          {rel.sort((a,b) => new Date(b.dia) - new Date(a.dia)).map((r) => (
             <tr scope="row" key={r.filename}>
               <td>{r.dia}</td>
               <td>{r.filename}</td>
               <td>{r.recursos}</td>
               <td>{r.servicos}</td>
-              <td onClick={() => { delRelatorio(r.filename); }}>Excluir</td>
+              <td onClick={() => { delRelatorio(r.filename); }}><a href="#">Excluir</a></td>
             </tr>
           ))}
         </tbody>
       </table>
     </main>
+    {status}
     </>
   );
 }
