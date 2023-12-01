@@ -8,10 +8,7 @@ export default function Read() {
   const History = useNavigate();
   const { state } = useLocation();
   const [comp, setComp] = React.useState([]);
-  const [dataStart, setDataStart] = React.useState(Date(Date.now()));
-  const [dataStop, setDataStop] = React.useState(Date(Date.now()));
-  const [ativ, setAtiv] = React.useState(Number.MAX_VALUE);
-  const [reg, setReg] = React.useState(Number.MAX_VALUE);
+  const [msg, setMsg] = React.useState("Carregando...");
   const [showModal, setShowModal] = React.useState(false);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const onCloseModal = () => {
@@ -21,19 +18,17 @@ export default function Read() {
       setShowModal(!showModal);
     }
   }
-  const onUpdateVars = (vars) => {
-    setDataStart(vars[0]);
-    setDataStop(vars[1]);
-    setAtiv(vars[2]);
-    setReg(vars[3]);
-  }
+  const onUpdateVars = (vars) => {}
   const getComposicoes = async () => {
     const data = await Requisicao("Composicao");
     if(!data.ok) setShowModal(true);
-    else setComp(await data.json());
+    else {
+      let c = await data.json();
+      if(c.length == 0) setMsg("Não há composições!");
+      setComp(c);
+    } 
   }
   React.useEffect(() => {
-    console.dir(state); 
     if (state) {
       setlistaAvisos(["Há erros no preenchimento da composição!"]);
       setShowModal(!showModal);
@@ -47,7 +42,7 @@ export default function Read() {
     return (
       <div className="text-center">
         {showModal && <Modal listaAvisos={errorMsg} onClose={onCloseModal}/>}
-        Carregando...
+        {msg}
       </div>
     );
   }
@@ -78,12 +73,6 @@ export default function Read() {
           </tr>
         </thead>
         <tbody>
-          {/* filter((c) => (
-            !state && (((new Date(c.dia) >= new Date(dataStart)) &&
-            (new Date(c.dia) <= new Date(dataStop)) &&
-            (ativ == Number.MAX_VALUE || c.atividade == ativ) &&
-            (reg == Number.MAX_VALUE || c.regional == reg)))
-          )) */}
           {comp.map((c) => (
             <tr scope="row" key={c.dia + c.recurso} className={(c.validacao.length > 0) ? "text-danger" : ""}>
               <td>{c.dia.substr(0, 10).split('-').reverse().join('/')}</td>
@@ -100,7 +89,13 @@ export default function Read() {
               <td>{c.supervisor.split(" ", 1)[0]}</td>
               <td>{regional[c.regional]}</td>
               <td>
-                {!state ? <Link to="Edit" state={c}>Editar</Link> : <a onClick={() => { setlistaAvisos(c.validacao); setShowModal(!showModal); }}>{`${c.validacao.length} erros`}</a>}
+                { !state ?
+                  <Link to="Edit" state={c}>Editar</Link> : (c.validacao.length > 0) ?
+                  <a onClick={() => {
+                    setlistaAvisos(c.validacao);
+                    setShowModal(!showModal);
+                }}>{`${c.validacao.length} erros`}</a> :
+                "0 erros" }
               </td>
             </tr>
           ))}
