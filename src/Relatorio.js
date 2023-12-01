@@ -100,7 +100,7 @@ export default function Relatorio()
           </tr>
         </thead>
         <tbody>
-          {rel.map((r) => {
+          {rel.map((r) => (
             <tr scope="row" key={r.filename}>
               <td>{r.dia}</td>
               <td>{r.filename}</td>
@@ -108,7 +108,7 @@ export default function Relatorio()
               <td>{r.servicos}</td>
               <td onClick={() => { delRelatorio(r.filename); }}>Excluir</td>
             </tr>
-          })}
+          ))}
         </tbody>
       </table>
     </main>
