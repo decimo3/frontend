@@ -15,7 +15,6 @@ export async function Requisicao(locate, verbo="GET", data=null, param=null) {
       'Content-Type': 'application/json; charset=UTF-8'
     })
   }
-  console.dir(req);
   try {
     let r = await fetch(url, req);
     return r;
