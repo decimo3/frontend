@@ -75,10 +75,10 @@ export default function Read() {
         <tbody>
           {comp.map((c) => (
             <tr scope="row" key={c.dia + c.recurso} className={(c.validacao.length > 0) ? "text-danger" : ""}>
-              <td>{c.dia.substr(0, 10).split('-').reverse().join('/')}</td>
+              <td>{c.dia.substr(0, 10).split('-').reverse().slice(0,2).join('/')}</td>
               <td>{c.adesivo}</td>
-              <td>{c.placa}</td>
-              <td>{c.recurso}</td>
+              <td>{c.placa.replace("-", "")}</td>
+              <td>{c.recurso.split(" ").map((x) => (x == "-" ? "" : x == "Religa" ? "R" : x == "Corte" ? "C" : x == "Equipe" ? "" : x )).join("")}</td>
               <td>{atividade[c.atividade]}</td>
               <td>{c.id_motorista}</td>
               <td>{c.motorista.split(" ", 1)[0]}</td>
