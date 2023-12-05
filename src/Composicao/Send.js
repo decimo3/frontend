@@ -39,6 +39,7 @@ export default function Send() {
         <input className="form-control my-2" type="file" required accept=".xlsx" onChange={(e) => { setFile(e.target.files[0]); }}/>
       </div>
       <input className="btn btn-primary btn-block my-2" type="button" value="Enviar" onClick={requestFile}/>
+      <input className="btn btn-secondary btn-block my-2" type="button" value="Voltar" onClick={ () => {History('/Composicao')} }/>
     </form>
     </>
   );
