@@ -73,9 +73,10 @@ export default function Handle()
       return;
     }
     let body = JSON.stringify(composicao);
+    let path = state ? "Composicao" : "Composicao/Formulario";
     let verbo = state ? "PUT" : "POST";
     let param = state ? [state.dia, state.recurso] : [];
-    const res = await Requisicao("Composicao", verbo, body, param);
+    const res = await Requisicao(path, verbo, body, param);
     switch(res.status) {
       case 201: setlistaAvisos(["Composição cadastrada!"]); break;
       case 204: setlistaAvisos(["Composição atualizada!"]); break;

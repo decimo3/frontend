@@ -19,7 +19,7 @@ export default function Send() {
       setShowModal(true);
       return;
     }
-    const res = await Carregar("Composicao", file);
+    const res = await Carregar("Composicao/Arquivo", file);
     if(res.status == undefined) setlistaAvisos(errorMsg);
     else if (res.status == 422) {
       History('../Result', {state: await res.json()});
@@ -27,7 +27,7 @@ export default function Send() {
     else if(res.status === 200) {
       setlistaAvisos(["Composição enviada com sucesso!"]);
     }
-    else setlistaAvisos([await res.text()]);
+    else setlistaAvisos(errorMsg);
     setShowModal(true);
   }
   return (
