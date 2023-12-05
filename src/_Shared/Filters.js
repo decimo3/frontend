@@ -8,17 +8,15 @@ export default function Filters({links, updateVars}) {
   const [ativ, setAtiv] = React.useState(0);
   const [reg, setReg] = React.useState(0);
   const { pathname } = useLocation();
-  React.useEffect(() => {
-    let inicio = new Date(dataStart).toISOString().substring(0,10);
-    let final = new Date(dataStop).toISOString().substring(0,10)
-    async function getData() {
-      let param = [inicio, final, reg, ativ];
-      let req = await Requisicao(pathname, "GET", null, param);
-      let res = req.ok ? await req.json() : [];
-      updateVars(res);
-    }
-    getData();
-  }, [dataStart, dataStop, ativ, reg]);
+  React.useEffect(() => { getData(); }, []);
+  const getData = async () => {
+  let inicio = new Date(dataStart).toISOString().substring(0,10);
+  let final = new Date(dataStop).toISOString().substring(0,10)
+    let param = [inicio, final, reg, ativ];
+    let req = await Requisicao(pathname, "GET", null, param);
+    let res = req.ok ? await req.json() : [];
+    updateVars(res);
+  }
   return (
     <main className="card p-2 m-2">
       <div className="input-group">
@@ -35,6 +33,7 @@ export default function Filters({links, updateVars}) {
         <select className="form-control" value={reg} onChange={(d) => { setReg(d.target.value); }}>
           {regional.map((r, i) => ( <option value={i} key={i}>{r}</option> ))}
         </select>
+        <button className="btn btn-secondary" type="button" onClick={(e) => {getData()}}>Filtrar</button>
       </div>
     </main>
   );
