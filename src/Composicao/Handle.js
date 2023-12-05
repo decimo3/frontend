@@ -34,7 +34,7 @@ export default function Handle()
   const nomeColaborador = async (mat, campo) => {
     let valor = "";
     if(mat.length == 7) {
-      const res = await Requisicao("Funcionario", "GET", null, Number(mat));
+      const res = await Requisicao("Funcionario", "GET", null, [Number(mat)]);
       if(res.status === undefined) {
         setlistaAvisos(errorMsg);
         setShowModal(!showModal);
@@ -74,7 +74,7 @@ export default function Handle()
     }
     let body = JSON.stringify(composicao);
     let verbo = state ? "PUT" : "POST";
-    let param = state ? `${state.dia}/${state.recurso}` : null;
+    let param = state ? [state.dia, state.recurso] : [];
     const res = await Requisicao("Composicao", verbo, body, param);
     switch(res.status) {
       case 201: setlistaAvisos(["Composição cadastrada!"]); break;
@@ -98,7 +98,7 @@ export default function Handle()
       setConfir(true);
       return;
     }
-    const res = await Requisicao("Composicao", "DELETE", null, `${state.dia}/${state.recurso}`);
+    const res = await Requisicao("Composicao", "DELETE", null, [state.dia, state.recurso]);
     switch(res.status) {
       case 204: setlistaAvisos(["Composição excluída!"]); break;
       case 404: setlistaAvisos(["Composição não encontrada!"]); break;

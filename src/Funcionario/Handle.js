@@ -38,7 +38,7 @@ export default function Handle()
     }
     let body = JSON.stringify(funcionario);
     let verbo = state ? "PUT" : "POST";
-    let param = state ? state.matricula : null;
+    let param = state ? [state.matricula] : [];
     const res = await Requisicao("Funcionario", verbo, body, param);
     switch(res.status) {
       case 201: setlistaAvisos(["Funcionário cadastrado!"]); break;
@@ -62,7 +62,7 @@ export default function Handle()
       setConfir(true);
       return;
     }
-    const res = await Requisicao("Funcionario", "DELETE", null, state.matricula);
+    const res = await Requisicao("Funcionario", "DELETE", null, [state.matricula]);
     switch(res.status) {
       case 204: setlistaAvisos(["Funcionário excluído!"]); break;
       case 404: setlistaAvisos(["Funcionário não encontrado!"]); break;

@@ -53,7 +53,7 @@ export default function Relatorio()
   const delRelatorio = async (arg) => {
     if(confir == arg) {
       setShowWait(!showWait);
-      const res = await Requisicao("Servico", "DELETE", null, arg);
+      const res = await Requisicao("Servico", "DELETE", null, [arg]);
       switch(res.status) {
         case undefined: setlistaAvisos(errorMsg); break;
         case 204: setlistaAvisos(["Relatório excluído!"]); break;
