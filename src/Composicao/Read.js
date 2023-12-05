@@ -28,7 +28,7 @@ export default function Read() {
       setShowModal(!showModal);
       setComp(state);
     }
-  }, [comp]);
+  }, []);
   if (comp.length === 0) {
     return (
       <div className="text-center">

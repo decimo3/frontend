@@ -8,7 +8,7 @@ export default function Filters({links, updateVars}) {
   const [ativ, setAtiv] = React.useState(0);
   const [reg, setReg] = React.useState(0);
   const { pathname } = useLocation();
-  React.useEffect(() => { getData(); }, []);
+  // React.useEffect(() => { getData(); }, []);
   const getData = async () => {
     let inicio = new Date(dataStart).toISOString().substring(0,10);
     let final = new Date(dataStop).toISOString().substring(0,10)
