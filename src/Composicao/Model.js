@@ -1,5 +1,5 @@
-export const atividade = ["CORTE" , "RELIGA", "AVANÇADO", "CAMINHÃO", "EMERGÊNCIA"];
-export const regional = ["BAIXADA", "OESTE"];
+export const atividade = ["TODOS", "CORTE" , "RELIGA", "AVANÇADO", "CAMINHÃO", "EMERGÊNCIA"];
+export const regional = ["TODAS", "BAIXADA", "OESTE"];
 export default class Composicao {
   constructor(dia, adesivo, placa, recurso, ativ, ele1, mat1, ele2, mat2, tel, mat3, sup, reg) {
     this.dia = dia;
@@ -39,7 +39,11 @@ export default class Composicao {
       this.errors.push("O recurso digitado não é válido!");
     if (this.atividade > atividade.length)
       this.errors.push("A atividade selecionada é inválida!");
+    if (this.atividade == 0)
+    this.errors.push("A atividade selecionada é inválida!");
     if (this.regional > regional.length)
+      this.errors.push("A regional selecionada é inválida!")
+    if (this.regional == 0)
       this.errors.push("A regional selecionada é inválida!")
     if (!this.isValidAdesivo())
       this.errors.push("O adesivo inserido não é válido!");
