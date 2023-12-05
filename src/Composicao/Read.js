@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { atividade, regional } from './Model';
 import Filters from "../_Shared/Filters";
-import { Requisicao, errorMsg } from "../Requisicao";
+import { errorMsg } from "../Requisicao";
 import Modal from "../Modal";
 export default function Read() {
   const History = useNavigate();
@@ -18,15 +18,9 @@ export default function Read() {
       setShowModal(!showModal);
     }
   }
-  const onUpdateVars = (vars) => {}
-  const getComposicoes = async () => {
-    const data = await Requisicao("Composicao");
-    if(!data.ok) setShowModal(true);
-    else {
-      let c = await data.json();
-      if(c.length == 0) setMsg("Não há composições!");
-      setComp(c);
-    } 
+  const onUpdateVars = (vars) => {
+    if(vars.length == 0) setMsg("Não há composições!");
+    setComp(vars);
   }
   React.useEffect(() => {
     if (state) {
@@ -34,14 +28,12 @@ export default function Read() {
       setShowModal(!showModal);
       setComp(state);
     }
-    else {
-      getComposicoes();
-    }
-  }, []);
+  }, [comp]);
   if (comp.length === 0) {
     return (
       <div className="text-center">
         {showModal && <Modal listaAvisos={errorMsg} onClose={onCloseModal}/>}
+        {!state && <Filters links={[<Link to='Create'>Criar composição</Link>,<Link to='Send'>Enviar Composição</Link>]} updateVars={onUpdateVars}/>}
         {msg}
       </div>
     );
