@@ -10,10 +10,11 @@ export default function Filters({links, updateVars}) {
   const { pathname } = useLocation();
   React.useEffect(() => { getData(); }, []);
   const getData = async () => {
-  let inicio = new Date(dataStart).toISOString().substring(0,10);
-  let final = new Date(dataStop).toISOString().substring(0,10)
+    let inicio = new Date(dataStart).toISOString().substring(0,10);
+    let final = new Date(dataStop).toISOString().substring(0,10)
     let param = [inicio, final, reg, ativ];
-    let req = await Requisicao(pathname, "GET", null, param);
+    let path = pathname == "/" ? "" : pathname;
+    let req = await Requisicao(path, "GET", null, param);
     let res = req.ok ? await req.json() : [];
     updateVars(res);
   }
