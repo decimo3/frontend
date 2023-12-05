@@ -6,7 +6,7 @@ export const errorMsg = [
   <a target="_blank" href='https://api.whatsapp.com/send?phone=5521975429768'>WhatsApp MestreRuan</a>
 ];
 export async function Requisicao(locate, verbo="GET", data=null, param=[]) {
-  let local = param ? `${locate}${param.join("/")}` : locate;
+  let local = param ? `${locate}/${param.join("/")}` : locate;
   let url = new URL(local, baseURL);
   const req = {
     method: verbo,
