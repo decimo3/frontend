@@ -11,6 +11,7 @@ export async function Requisicao(locate, verbo="GET", data=null, param=[]) {
   const req = {
     method: verbo,
     body: data,
+    credentials: 'include',
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
     })
