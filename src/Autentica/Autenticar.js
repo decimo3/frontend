@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import Autenticacao from './Model';
 import { Requisicao, errorMsg } from "../Requisicao";
-export default function Autentica() {
+export default function Autenticar() {
   const History = useNavigate();
   const [matricula, setMat] = React.useState('');
   const [palavra, setPwd] = React.useState('');
   const [showModal, setShowModal] = React.useState(false);
   const [listaAvisos, setListaAviso] = React.useState([]);
   const onCloseModal = () => {
-    if(listaAvisos[0] == "Autenticado com sucesso!") return History('/Autentica');
+    if(listaAvisos[0] == "Autenticado com sucesso!") return History('/');
     setShowModal(!showModal)
   }
   const TryAutenticate = async () => {
@@ -21,7 +21,7 @@ export default function Autentica() {
       return;
     }
     let body = JSON.stringify(data);
-    let res = await Requisicao("/Autencicacao", "POST", body, null);
+    let res = await Requisicao("/Autenticacao", "POST", body, null);
     switch(res.status) {
       case 200: setListaAviso(["Autenticado com sucesso!"]); break;
       case 401: setListaAviso(["Matrícula ou senha incorretos!"]); break;
