@@ -12,6 +12,7 @@ export default function Header()
           <Link to='/Funcionario'>Funcionários</Link>
           <Link to='/Composicao'>Composições</Link>
           <Link to='/Relatorio'>Relatórios</Link>
+          <Link to='/Autentica'>Usuário</Link>
         </nav>
     </header>
   )
