@@ -8,7 +8,7 @@ import Relatorio from './Relatorio';
 import Funcionario from './Funcionario/Index';
 import Composicao from './Composicao/Index';
 import NotFound from './NotFound';
-import Autentica from './Autentica/Index';
+import Usuario from './Autentica/Index';
 
 export default function App(){
   return (
@@ -19,7 +19,7 @@ export default function App(){
         <Route exact path='/Funcionario/*' element={<Funcionario/>} />
         <Route exact path='/Composicao/*' element={<Composicao/>} />
         <Route exact path='/Relatorio' element={<Relatorio/>} />
-        <Route exact path='/Autentica/*' element={<Autentica/>} />
+        <Route exact path='/Usuario/*' element={<Usuario/>} />
         <Route path='*' element={<NotFound/>} />
       </Routes>
       <Footer /> 

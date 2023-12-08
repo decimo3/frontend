@@ -1,17 +1,13 @@
 import React from "react";
 import { Route, Routes } from 'react-router-dom';
-import Autentica from "./Autentica";
-import Usuario from "./Usuario";
+import Autenticar from "./Autenticar";
+import Autenticado from "./Autenticado";
 import { getCookie } from "../_Shared/Cookie";
-export default function Funcionario()
+export default function Usuario()
 {
   return (
       <Routes>
-        {getCookie("MeuCookie") ? 
-        <Route path="/" element={<Usuario/>} />
-        :
-        <Route path="/" element={<Autentica/>} />
-        }
+        <Route path="/" element={getCookie("MeuCookie") ? <Autenticado/> : <Autenticar/>} />
       </Routes>
   );
 }
