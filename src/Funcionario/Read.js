@@ -43,6 +43,11 @@ export default function Read()
         <tr>
           <th scope="col">Matrícula:</th>
           <th scope="col">Nome:</th>
+          <th scope="col">Admissão:</th>
+          <th scope="col">Regional:</th>
+          <th scope="col">Atividade:</th>
+          <th scope="col">Superior:</th>
+          <th scope="col">Situação:</th>
           <th scope="col">Função:</th>
           <th scope="col">Opções:</th>
         </tr>
@@ -52,6 +57,11 @@ export default function Read()
           <tr scope="row" key={f.matricula}>
             <td>{f.matricula}</td>
             <td>{f.nome_colaborador}</td>
+            <td>{f.admissao}</td>
+            <td>{f.regional}</td>
+            <td>{f.atividade}</td>
+            <td>{f.id_superior}</td>
+            <td>{f.situacao}</td>
             <td>{funcoes[f.funcao]}</td>
             <td>
             <Link to="Edit" state={f}>Editar</Link>
