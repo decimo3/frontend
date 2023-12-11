@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Modal from "../Modal";
 import Autenticacao from './Model';
 import { Requisicao, errorMsg } from "../Requisicao";
@@ -40,6 +40,7 @@ export default function Autenticar() {
         <label>Senha:</label>
         <input type="password" className="form-control my-2" value={palavra} onChange={(e) => { setPwd(e.target.value) }} required/>
         <input type="button" className="btn btn-primary btn-block my-2" value="Logar" onClick={ () => { TryAutenticate() } }/>
+        <Link to="Recuperar">Recuperar acesso</Link>
       </div>
     </>
   );
