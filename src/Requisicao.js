@@ -5,7 +5,7 @@ export const errorMsg = [
   "Se o problema persistir, contacte o administrador do sistema.",
   <a target="_blank" href='https://api.whatsapp.com/send?phone=5521975429768'>WhatsApp MestreRuan</a>
 ];
-export async function Requisicao(locate, verbo="GET", data=null, param=[]) {
+export async function Requisicao(locate, verbo="GET", data=null, param=null) {
   let local = param ? `${locate}/${param.join("/")}` : locate;
   let url = new URL(local, baseURL);
   const req = {
