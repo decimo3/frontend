@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import { Requisicao, errorMsg } from "../Requisicao";
 import { isValidMatricula, isValidName } from "../Funcionario/Model";
+import Autenticacao from "./Model";
 class VerificarInfo {
   constructor(admissao, matricula, nome_colaborador) {
     this.admissao = admissao;
@@ -26,7 +27,7 @@ export default function Recuperar() {
   const [temp, setTemp] = React.useState('');
   function onCloseModal() {
     if(listaAvisos[0] == "Informações verificadas!") {
-      History('/TrocarSenha', {state: temp});
+      History('/Usuario/TrocarSenha', {state: temp});
     }
   }
   async function verificarInfo() {
@@ -40,10 +41,15 @@ export default function Recuperar() {
       return;
     }
     let data = JSON.stringify(r);
-    let res = await Requisicao("/Funcionario/Verificar", "POST", data, []);
+    let res = await Requisicao("/Funcionario/Verificar", "POST", data, null);
     switch(res.status) {
       case 200:
-        setTemp(await res.json());
+        let s = await res.json();
+        let data = new Autenticacao(r.matricula, s.palavra);
+        let body = JSON.stringify(data);
+        await Requisicao("/Autenticacao", "POST", body, null);
+        let t = await Requisicao('/Autenticacao');
+        setTemp(await t.json());
         setListaAviso(["Informações verificadas!"]);
       break;
       case 404: setListaAviso([
