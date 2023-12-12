@@ -43,7 +43,6 @@ export default function Read()
         <tr>
           <th scope="col">Matrícula:</th>
           <th scope="col">Nome:</th>
-          <th scope="col">Admissão:</th>
           <th scope="col">Regional:</th>
           <th scope="col">Atividade:</th>
           <th scope="col">Superior:</th>
@@ -57,7 +56,6 @@ export default function Read()
           <tr scope="row" key={f.matricula}>
             <td>{f.matricula}</td>
             <td>{f.nome_colaborador}</td>
-            <td>{f.admissao}</td>
             <td>{f.regional}</td>
             <td>{f.atividade}</td>
             <td>{f.id_superior}</td>

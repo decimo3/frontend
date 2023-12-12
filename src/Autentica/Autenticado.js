@@ -59,10 +59,6 @@ export default function Autenticado() {
           <div className="text-right">{usr.nome_colaborador}</div>
         </div>
         <div className="d-flex justify-content-between my-2">
-          <div className="text-left">Data de admissão:</div>
-          <div className="text-right">{usr.admissao}</div>
-        </div>
-        <div className="d-flex justify-content-between my-2">
           <div className="text-left">Situação:</div>
           <div className="text-right">{usr.situacao}</div>
         </div>
