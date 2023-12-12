@@ -18,8 +18,7 @@ class trocarSenha {
 export default function TrocarSenha() {
   const History = useNavigate();
   const { state } = useLocation();
-  const [usr, setUsr] = React.useState();
-  const [psw0, setPwd0] = React.useState(state ? state.palavra : '');
+  const [psw0, setPwd0] = React.useState(state.palavra ? state.palavra : '');
   const [psw1, setPwd1] = React.useState('');
   const [psw2, setPwd2] = React.useState('');
   const [showModal, setShowModal] = React.useState(false);
@@ -40,7 +39,7 @@ export default function TrocarSenha() {
       return;
     }
     let data = JSON.stringify(t);
-    let res = await Requisicao("/Autenticacao", "PUT", data, null);
+    let res = await Requisicao("/Funcionario/TrocarSenha", "PUT", data, [state.matricula]);
     switch(res.status) {
       case 204: setListaAviso(["Senha trocada com sucesso!"]); break;
       case 401: setListaAviso(["A senha anterior não confere!"]); break;
@@ -52,10 +51,8 @@ export default function TrocarSenha() {
     <>
       {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
       <main className="card w-50 start-50 translate-middle-x p-4 m-2">
-      {!state && <>
         <label>Senha antiga:</label>
-        <input type="password" className="form-control text-right my-2" onChange={(e) => { setPwd0(e.target.value); }} />
-      </>}
+        <input type="password" className="form-control text-right my-2" onChange={(e) => { setPwd0(e.target.value); }} disabled={!(state.palavra == null)}/>
         <label>Trocar a senha:</label>
         <input type="password" className="form-control text-right my-2" onChange={(e) => { setPwd1(e.target.value); }} />
         <label>Repita a senha:</label>
