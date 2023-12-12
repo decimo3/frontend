@@ -5,7 +5,11 @@ export function isValidMatricula(mat)
 }
 export function isValidName(nom)
 {
-  return RegExp(/^([A-z\s]{4,}){2,}([A-z]{4,}){1}$/).test(nom);
+  return RegExp(/^([A-z\s]{2,}){2,}([A-z]{4,}){1}$/).test(nom);
+}
+export function isValidPalavra(nom)
+{
+  return RegExp(/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/g).test(nom);
 }
 export default class Funcionario
 {
