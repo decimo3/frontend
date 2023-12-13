@@ -11,6 +11,7 @@ export default function Handle()
   const [stateMat, setMat] = React.useState(state ? state.matricula : 0);
   const [stateNom, setNom] = React.useState(state ? state.nome_colaborador : "");
   const [stateFun, setFun] = React.useState(state ? state.funcao : 0);
+  const [stateAdm, setAdm] = React.useState(state ? state.admissao : "");
   const [confir, setConfir] = React.useState(false);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
@@ -29,7 +30,7 @@ export default function Handle()
     setlistaAvisos(newarr);
   }
   const sendFuncionario = async () => {
-    const funcionario = new Funcionario(stateNom, stateMat, stateFun);
+    const funcionario = new Funcionario(stateNom, stateMat, stateFun, stateAdm);
     if(!funcionario.isValidFuncionario())
     {
       setlistaAvisos(funcionario.errors);
@@ -73,27 +74,35 @@ export default function Handle()
   return (
     <>
       {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
-      <form className="form-control">
-        <div className="form-group my-2">
+      <div className="card p-2 m-2">
+      <div className="row">
+        <div className="form-group my-2 col-4">
           <label>Matrícula Light:</label>
           <input className="form-control" type="number" value={stateMat} onChange={(e) => {setMat(e.target.value);}} required/>
         </div>
-        <div className="form-group py-2">
+        <div className="form-group py-2 col-8">
           <label>Nome do colaborador:</label>
           <input type="text" className="form-control" value={stateNom} onChange={(e) => {setNom(e.target.value);}} required/>
         </div>
-        <div className="form-group py-2">
+      </div>
+      <div className="row">
+        <div className="form-group py-2 col-4">
+          <label>Data de admissão:</label>
+          <input type="date" className="form-control" onChange={ (e) => {setAdm}} required disabled={state}/>
+        </div>
+        <div className="form-group py-2 col-8">
           <label>Função do colaborador:</label>
           <select value={stateFun} className="form-control" onChange={(e) => {setFun(Number(e.target.value));}}>
           {funcoes.map((f, i) => ( <option key={i} value={i}>{f}</option> ))}
           </select>
+      </div>
         </div>
         <div className="form-group py-2">
           <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={sendFuncionario}/>
           <input type="button" className="btn btn-secondary btn-block" value="Voltar" onClick={() => {History('/Funcionario')}}/>
           {state && <input type="button" className="btn btn-danger btn-block" value="Excluir" onClick={delFuncionario}/>}
         </div>
-      </form>
+      </div>
     </>
   );
 }
