@@ -48,8 +48,7 @@ export default function Recuperar() {
         let data = new Autenticacao(r.matricula, s.palavra);
         let body = JSON.stringify(data);
         await Requisicao("/Autenticacao", "POST", body, null);
-        let t = await Requisicao('/Autenticacao');
-        setTemp(await t.json());
+        setTemp(s);
         setListaAviso(["Informações verificadas!"]);
       break;
       case 404: setListaAviso([
