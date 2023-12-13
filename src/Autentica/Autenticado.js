@@ -30,7 +30,7 @@ export default function Autenticado() {
   }, [])
   function deslogarUsuario() {
     setCookie("MeuCookie", "", "");
-    if (getCookie("MeuCookie")) {
+    if (!getCookie("MeuCookie")) {
       setListaAviso(["Usuário deslogado!"]);
     } else {
       setListaAviso(errorMsg);
