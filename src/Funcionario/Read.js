@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { funcoes } from "./Model";
+import { funcoes, situacao } from "./Model";
+import { regional, atividade } from "../Composicao/Model";
 import { Requisicao, errorMsg } from "../Requisicao";
 import Modal from "../Modal";
 export default function Read()
@@ -45,7 +46,6 @@ export default function Read()
           <th scope="col">Nome:</th>
           <th scope="col">Regional:</th>
           <th scope="col">Atividade:</th>
-          <th scope="col">Superior:</th>
           <th scope="col">Situação:</th>
           <th scope="col">Função:</th>
           <th scope="col">Opções:</th>
@@ -56,10 +56,9 @@ export default function Read()
           <tr scope="row" key={f.matricula}>
             <td>{f.matricula}</td>
             <td>{f.nome_colaborador}</td>
-            <td>{f.regional}</td>
-            <td>{f.atividade}</td>
-            <td>{f.id_superior}</td>
-            <td>{f.situacao}</td>
+            <td>{regional[f.regional]}</td>
+            <td>{atividade[f.atividade]}</td>
+            <td>{situacao[f.situacao]}</td>
             <td>{funcoes[f.funcao]}</td>
             <td>
             <Link to="Edit" state={f}>Editar</Link>
