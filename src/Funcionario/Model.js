@@ -1,4 +1,5 @@
-export const funcoes = ["Eletricista", "Supervisor"];
+export const funcoes = ['ELETRICISTA', 'SUPERVISOR'];
+export const situacao = ['ATIVO', 'DESLIGADO', 'FÉRIAS', 'AFASTADO'];
 export function isValidMatricula(mat)
 {
   return RegExp(/^[0-9]{7}$/).test(mat);
