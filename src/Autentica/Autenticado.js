@@ -4,6 +4,7 @@ import Modal from "../Modal";
 import { getCookie, setCookie } from "../_Shared/Cookie";
 import { Requisicao, errorMsg } from "../Requisicao";
 import { regional, atividade } from "../Composicao/Model";
+import { funcoes, situacao } from "../Funcionario/Model";
 export default function Autenticado() {
   // TODO 1: deslogar (sair);
   // TODO 2: Trocar a senha;
@@ -60,7 +61,7 @@ export default function Autenticado() {
         </div>
         <div className="d-flex justify-content-between my-2">
           <div className="text-left">Situação:</div>
-          <div className="text-right">{usr.situacao}</div>
+          <div className="text-right">{situacao[usr.situacao]}</div>
         </div>
         <div className="d-flex justify-content-between my-2">
           <div className="text-left">Regional:</div>
@@ -68,15 +69,11 @@ export default function Autenticado() {
         </div>
         <div className="d-flex justify-content-between my-2">
           <div className="text-left">Função:</div>
-          <div className="text-right">{usr.funcao}</div>
+          <div className="text-right">{funcoes[usr.funcao]}</div>
         </div>
         <div className="d-flex justify-content-between my-2">
           <div className="text-left">Atividade:</div>
           <div className="text-right">{atividade[usr.atividade]}</div>
-        </div>
-        <div className="d-flex justify-content-between my-2">
-          <div className="text-left">Supervisor:</div>
-          <div className="text-right">{usr.id_supervisor}</div>
         </div>
         <Link to='TrocarSenha' state={usr}>Trocar a senha</Link>
         <input type="button" className="btn btn-warning btn-block my-2" value="Sair" onClick={ ()=>{ deslogarUsuario(); }} />
