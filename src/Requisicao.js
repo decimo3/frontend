@@ -40,3 +40,15 @@ export async function Carregar(locate, file) {
     return { ok: false };
   }
 }
+export async function Informacoes() {
+  let user = window.localStorage.getItem("user");
+  if(!user) {
+    let req = await Requisicao("/Autenticacao");
+    if(req.status != 200) return null;
+    let user = await req.json();
+    let u = JSON.stringify(user);
+    window.localStorage.setItem("user", u);
+    return user;
+  }
+  return JSON.parse(user);
+}
