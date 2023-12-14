@@ -9,8 +9,9 @@ import Funcionario from './Funcionario/Index';
 import Composicao from './Composicao/Index';
 import NotFound from './NotFound';
 import Usuario from './Autentica/Index';
-
+import Servico from './Servico';
 export default function App(){
+  Servico();
   return (
     <BrowserRouter>
       <Header />
@@ -22,7 +23,7 @@ export default function App(){
         <Route exact path='/Usuario/*' element={<Usuario/>} />
         <Route path='*' element={<NotFound/>} />
       </Routes>
-      <Footer /> 
+      <Footer />
     </BrowserRouter>
   );
 }
