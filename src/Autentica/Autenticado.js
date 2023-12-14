@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Modal from "../Modal";
 import { getCookie, setCookie } from "../_Shared/Cookie";
-import { Requisicao, errorMsg } from "../Requisicao";
+import { Informacoes, errorMsg } from "../Requisicao";
 import { regional, atividade } from "../Composicao/Model";
 import { funcoes, situacao } from "../Funcionario/Model";
 export default function Autenticado() {
@@ -22,16 +22,14 @@ export default function Autenticado() {
   }
   React.useEffect(() => {
     async function receberUsuario() {
-      var res = await Requisicao('/Autenticacao');
-      var c = await res.json();
-      console.dir(c);
-      setUsr(c);
+      setUsr(await Informacoes());
     }
     receberUsuario();
   }, [])
   function deslogarUsuario() {
     setCookie("MeuCookie", "", "");
-    if (!getCookie("MeuCookie")) {
+    window.localStorage.removeItem("user");
+    if (!getCookie("MeuCookie") && !window.localStorage.getItem("user")) {
       setListaAviso(["Usuário deslogado!"]);
     } else {
       setListaAviso(errorMsg);
