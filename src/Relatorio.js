@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Requisicao, Carregar, errorMsg } from './Requisicao';
 import Modal from "./Modal";
 import Espera from "./Espera";
+import { Autorizacao } from "./Requisicao";
 export default function Relatorio()
 {
   const History = useNavigate();
@@ -79,6 +80,7 @@ export default function Relatorio()
     return (
       <>
         {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
+        {Autorizacao() &&
         <div className="card p-2 m-2">
           <div className="input-group">
             <span className="input-group-text">Enviar relatório:</span>
@@ -86,6 +88,7 @@ export default function Relatorio()
             <button className="btn btn-secondary" type="button" onClick={sendRelatorio}>Enviar</button>
           </div>
         </div>
+        }
         <div className="text-center">
           {msg}
         </div>
@@ -96,6 +99,7 @@ export default function Relatorio()
     <>
     {showWait && <Espera/>}
     {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
+    {Autorizacao() &&
     <div className="card p-2 m-2">
       <div className="input-group">
         <span className="input-group-text">Enviar relatório:</span>
@@ -103,6 +107,7 @@ export default function Relatorio()
         <button className="btn btn-secondary" type="button" onClick={sendRelatorio}>Enviar</button>
       </div>
     </div>
+    }
     <main className="card m-2 p-2">
       <table className="table table-hover">
         <thead>
@@ -111,7 +116,9 @@ export default function Relatorio()
             <th scope="col">Nome arquivo:</th>
             <th scope="col">Qnt. recursos:</th>
             <th scope="col">Qnt. serviços:</th>
+            {Autorizacao() &&
             <th scope="col">Opções:</th>
+            }
           </tr>
         </thead>
         <tbody>
@@ -121,7 +128,9 @@ export default function Relatorio()
               <td>{r.filename}</td>
               <td>{r.recursos}</td>
               <td>{r.servicos}</td>
+              {Autorizacao() &&
               <td onClick={() => { delRelatorio(r.filename); }}><a href="#">Excluir</a></td>
+              }
             </tr>
           ))}
         </tbody>
