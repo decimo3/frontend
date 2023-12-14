@@ -22,14 +22,14 @@ export default function Autenticado() {
   }
   React.useEffect(() => {
     async function receberUsuario() {
-      setUsr(await Informacoes());
+      setUsr(Usuario());
     }
     receberUsuario();
   }, [])
   function deslogarUsuario() {
     setCookie("MeuCookie", "", "");
     window.localStorage.removeItem("user");
-    if (!getCookie("MeuCookie") && !window.localStorage.getItem("user")) {
+    if (!getCookie("MeuCookie") && !Usuario()) {
       setListaAviso(["Usuário deslogado!"]);
     } else {
       setListaAviso(errorMsg);
