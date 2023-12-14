@@ -23,7 +23,14 @@ export default function Autenticar() {
     let body = JSON.stringify(data);
     let res = await Requisicao("/Autenticacao", "POST", body, null);
     switch(res.status) {
-      case 200: setListaAviso(["Autenticado com sucesso!"]); break;
+      case 200:
+        let req = await Requisicao("/Autenticacao");
+        if(req.status != 200) return null;
+        let user = await req.json();
+        let u = JSON.stringify(user);
+        window.localStorage.setItem("user", u);
+        setListaAviso(["Autenticado com sucesso!"]);
+        break;
       case 401: setListaAviso(["Matrícula ou senha incorretos!"]); break;
       default: setListaAviso(errorMsg); break;
     }
