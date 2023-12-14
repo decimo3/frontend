@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import Funcionario, { funcoes } from './Model';
 import { Requisicao, errorMsg } from "../Requisicao";
+import { atividade, regional } from "../Composicao/Model";
 export default function Handle()
 {
   // variables and states declarations;
@@ -12,6 +13,8 @@ export default function Handle()
   const [stateNom, setNom] = React.useState(state ? state.nome_colaborador : "");
   const [stateFun, setFun] = React.useState(state ? state.funcao : 0);
   const [stateAdm, setAdm] = React.useState(state ? state.admissao : "");
+  const [stateReg, setReg] = React.useState(state ? state.regional : "");
+  const [stateAti, setAti] = React.useState(state ? state.atividade : "");
   const [confir, setConfir] = React.useState(false);
   const [listaAvisos, setlistaAvisos] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
@@ -30,7 +33,7 @@ export default function Handle()
     setlistaAvisos(newarr);
   }
   const sendFuncionario = async () => {
-    const funcionario = new Funcionario(stateNom, stateMat, stateFun, stateAdm);
+    const funcionario = new Funcionario(stateNom, stateMat, stateFun, stateAdm, stateReg, stateAti);
     if(!funcionario.isValidFuncionario())
     {
       setlistaAvisos(funcionario.errors);
@@ -86,16 +89,30 @@ export default function Handle()
         </div>
       </div>
       <div className="row">
-        <div className="form-group py-2 col-4">
+        <div className="form-group py-2 col-6">
           <label>Data de admissão:</label>
-          <input type="date" className="form-control" onChange={ (e) => {setAdm}} required disabled={state}/>
+          <input type="date" className="form-control" onChange={ (e) => { setAdm(e.target.value); }} required disabled={state}/>
         </div>
-        <div className="form-group py-2 col-8">
+        <div className="form-group py-2 col-6">
           <label>Função do colaborador:</label>
           <select value={stateFun} className="form-control" onChange={(e) => {setFun(Number(e.target.value));}}>
           {funcoes.map((f, i) => ( <option key={i} value={i}>{f}</option> ))}
           </select>
       </div>
+        </div>
+        <div className="row">
+          <div className="form-group py-2 col-6">
+            <label>Regional:</label>
+            <select value={stateReg} className="form-control" onChange={(e) => {setReg(Number(e.target.value));}}>
+            {regional.map((f, i) => ( <option key={i} value={i}>{f}</option> ))}
+            </select>
+          </div>
+          <div className="form-group py-2 col-6">
+            <label>Atividade:</label>
+            <select value={stateAti} className="form-control" onChange={(e) => {setAti(Number(e.target.value));}}>
+            {atividade.map((f, i) => ( <option key={i} value={i}>{f}</option> ))}
+            </select>
+          </div>
         </div>
         <div className="form-group py-2">
           <input type="button" className="btn btn-primary btn-block" value="Enviar" onClick={sendFuncionario}/>

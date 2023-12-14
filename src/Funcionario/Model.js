@@ -14,11 +14,13 @@ export function isValidPalavra(nom)
 }
 export default class Funcionario
 {
-  constructor(nom, mat, fun, adm) {
+  constructor(nom, mat, fun, adm, reg, ativ) {
     this.nome_colaborador = nom;
     this.matricula = Number(mat);
     this.funcao = fun;
     this.admissao = adm;
+    this.regional = reg;
+    this.atividade = ativ;
     this.errors = [];
   }
   isValidFuncionario() {
