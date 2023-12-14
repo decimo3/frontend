@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Modal from "../Modal";
 import { getCookie, setCookie } from "../_Shared/Cookie";
-import { Informacoes, errorMsg } from "../Requisicao";
+import { Usuario, errorMsg } from "../Requisicao";
 import { regional, atividade } from "../Composicao/Model";
 import { funcoes, situacao } from "../Funcionario/Model";
 export default function Autenticado() {
