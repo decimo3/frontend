@@ -4,6 +4,7 @@ import { atividade, regional } from './Model';
 import Filters from "../_Shared/Filters";
 import { errorMsg } from "../Requisicao";
 import Modal from "../Modal";
+import { Autorizacao } from "../Requisicao";
 export default function Read() {
   const History = useNavigate();
   const { state } = useLocation();
@@ -33,7 +34,7 @@ export default function Read() {
     return (
       <div className="text-center">
         {showModal && <Modal listaAvisos={errorMsg} onClose={onCloseModal}/>}
-        {!state && <Filters links={[<Link to='Create'>Criar composição</Link>,<Link to='Send'>Enviar Composição</Link>]} updateVars={onUpdateVars}/>}
+        {!state && <Filters links={Autorizacao() ? [<Link to='Create'>Criar composição</Link>,<Link to='Send'>Enviar Composição</Link>] : []} updateVars={onUpdateVars}/>}
         {msg}
       </div>
     );
@@ -41,7 +42,7 @@ export default function Read() {
   return (
     <>
     {showModal && <Modal listaAvisos={listaAvisos} onClose={onCloseModal}/>}
-    {!state && <Filters links={[<Link to='Create'>Criar composição</Link>,<Link to='Send'>Enviar Composição</Link>]} updateVars={onUpdateVars}/>}
+    {!state && <Filters links={Autorizacao() ? [<Link to='Create'>Criar composição</Link>,<Link to='Send'>Enviar Composição</Link>] : []} updateVars={onUpdateVars}/>}
     <main className="card p-2 m-2">
       <table className="table table-hover">
         <thead>
@@ -59,9 +60,11 @@ export default function Read() {
             <th scope="col">Mat. Sup.:</th>
             <th scope="col">Supervisor:</th>
             <th scope="col">Regional:</th>
+            {Autorizacao() && 
             <th scope="col">
-            {!state ? "Opções:" : "Erros:"}
+              {!state ? "Opções:" : "Erros:"}
             </th>
+            }
           </tr>
         </thead>
         <tbody>
@@ -80,6 +83,7 @@ export default function Read() {
               <td>{c.id_supervisor}</td>
               <td>{c.supervisor.split(" ", 1)[0]}</td>
               <td>{regional[c.regional]}</td>
+              {Autorizacao() && 
               <td>
                 { !state ?
                   <Link to="Edit" state={c}>Editar</Link> : (c.validacao.length > 0) ?
@@ -89,6 +93,7 @@ export default function Read() {
                 }}>{`${c.validacao.length} erros`}</a> :
                 "0 erros" }
               </td>
+              }
             </tr>
           ))}
         </tbody>

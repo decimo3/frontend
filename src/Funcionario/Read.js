@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { funcoes, situacao } from "./Model";
 import { regional, atividade } from "../Composicao/Model";
-import { Requisicao, errorMsg } from "../Requisicao";
+import { Requisicao, errorMsg, Autorizacao } from "../Requisicao";
 import Modal from "../Modal";
 export default function Read()
 {
@@ -38,7 +38,7 @@ export default function Read()
   }
   return (
     <main className="card m-2 p-2">
-      <Link to='Create'>Criar novo funcionário</Link>
+      {Autorizacao() && <Link to='Create'>Criar novo funcionário</Link>}
       <table className="table table-hover">
       <thead>
         <tr>
@@ -48,7 +48,7 @@ export default function Read()
           <th scope="col">Atividade:</th>
           <th scope="col">Situação:</th>
           <th scope="col">Função:</th>
-          <th scope="col">Opções:</th>
+          {Autorizacao() && <th scope="col">Opções:</th>}
         </tr>
       </thead>
       <tbody>
@@ -60,9 +60,9 @@ export default function Read()
             <td>{atividade[f.atividade]}</td>
             <td>{situacao[f.situacao]}</td>
             <td>{funcoes[f.funcao]}</td>
-            <td>
-            <Link to="Edit" state={f}>Editar</Link>
-            </td>
+            {Autorizacao() &&
+              <td><Link to="Edit" state={f}>Editar</Link></td>
+            }
           </tr>
         ))}
       </tbody>
