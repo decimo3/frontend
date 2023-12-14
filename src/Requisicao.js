@@ -40,15 +40,13 @@ export async function Carregar(locate, file) {
     return { ok: false };
   }
 }
-export async function Informacoes() {
+export function Usuario() {
   let user = window.localStorage.getItem("user");
-  if(!user) {
-    let req = await Requisicao("/Autenticacao");
-    if(req.status != 200) return null;
-    let user = await req.json();
-    let u = JSON.stringify(user);
-    window.localStorage.setItem("user", u);
-    return user;
-  }
+  if(!user) return null;
   return JSON.parse(user);
+}
+export function Autorizacao() {
+  let usr = Usuario();
+  if(usr == null) return false;
+  else return (usr.funcao > 0);
 }
