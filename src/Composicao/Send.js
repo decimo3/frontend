@@ -24,7 +24,7 @@ export default function Send() {
     else if (res.status == 422) {
       History('../Result', {state: await res.json()});
     }
-    else if(res.status === 200) {
+    else if(res.status === 201) {
       setlistaAvisos(["Composição enviada com sucesso!"]);
     }
     else setlistaAvisos(errorMsg);
