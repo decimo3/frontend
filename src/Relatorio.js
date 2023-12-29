@@ -1,6 +1,6 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
-import { Requisicao, Carregar, errorMsg } from './Requisicao';
+import { useNavigate, Link } from 'react-router-dom';
+import { Requisicao, Carregar, errorMsg, baseURL } from './Requisicao';
 import Modal from "./Modal";
 import Espera from "./Espera";
 import { Autorizacao } from "./Requisicao";
@@ -128,8 +128,11 @@ export default function Relatorio()
               <td>{r.filename}</td>
               <td>{r.recursos}</td>
               <td>{r.servicos}</td>
-              {Autorizacao() &&
-              <td onClick={() => { delRelatorio(r.filename); }}><a href="#">Excluir</a></td>
+              {Autorizacao() && 
+              <td>
+                <Link to={`${baseURL}/Servico/${r.filename}`}>Baixar</Link>{" | "}
+                <a onClick={() => { delRelatorio(r.filename); }}>Excluir</a>
+              </td>
               }
             </tr>
           ))}
