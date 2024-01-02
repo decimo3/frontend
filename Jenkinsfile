@@ -6,6 +6,9 @@ pipeline {
             image 'node:20.10.0-alpine3.19'
         }
     }
+    triggers {
+        cron('0 0 * * 0')
+    }
     stages {
         stage('Check') {
             steps {
