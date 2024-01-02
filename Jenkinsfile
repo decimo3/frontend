@@ -8,13 +8,16 @@ pipeline {
     stages {
         stage('Check') {
             steps {
-                sh 'npm --version'
+                nodejs(nodeJSInstallationName: 'default') {
+                    sh 'npm --version'
+                }
             }
         }
         stage('Build') {
             steps {
-                git 'https://github.com/decimo3/produtivity-webapp'
-                sh 'npm install && npm run build'
+                nodejs(nodeJSInstallationName: 'default') {
+                    sh 'npm install && npm run build'
+                }
             }
         }
         stage('Update') {
