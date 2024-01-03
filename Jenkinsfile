@@ -1,9 +1,11 @@
 #!groovy
 
 pipeline {
-    docker {
-        image 'node:20.7.0-alpine3.19'
-        args '-p 3000:3000'
+    agent {
+        docker {
+            image 'node:20.7.0-alpine3.19'
+            args '-p 3000:3000'
+        }
     }
     triggers {
         cron('0 0 * * 0')
