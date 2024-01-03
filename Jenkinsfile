@@ -1,29 +1,28 @@
 #!groovy
 
 pipeline {
-    agent any
+    docker {
+        image 'node:20.7.0-alpine3.19'
+        args '-p 3000:3000'
+    }
     triggers {
         cron('0 0 * * 0')
     }
     stages {
         stage('Check') {
             steps {
-                nodejs(nodeJSInstallationName: 'default') {
-                    sh 'npm --version'
-                }
+                sh 'npm --version'
             }
         }
         stage('Build') {
             steps {
-                nodejs(nodeJSInstallationName: 'default') {
-                    sh 'npm install && npm run build'
-                }
+                sh 'npm install && npm run build'
             }
         }
         stage('Update') {
-          steps {
-            echo 'Do nothing'
-          }
+            steps {
+                echo 'Do nothing'
+            }
         }
     }
 }
