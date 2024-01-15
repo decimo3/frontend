@@ -16,6 +16,16 @@ export default class Composicao {
     this.supervisor = sup;
     this.regional = Number(reg);
     this.errors = [];
+    this.abreviacao = this.setAbreviacao();
+    this.identificador = this.setIdentificador();
+  }
+  setAbreviacao() {
+    var regex = new RegExp(/([A-Z]{3,}) [-|–] ([C|R]{1})?([a-z]+)?( [-|–] )?([A-z]+) ([0-9]{3})(\s{1,})?(\(.*\))?/g);
+    return this.recurso.replace(regex, "$1$2$6");
+  }
+  setIdentificador() {
+    if(!this.abreviacao) return null;
+    return String(this.dia.split('-').join('')) + this.abreviacao;
   }
   isValidAdesivo() {
     return (RegExp(/^[0-9]{5}$/).test(this.adesivo));
@@ -30,7 +40,7 @@ export default class Composicao {
     return (RegExp(/^[0-9]{11}$/).test(this.telefone));
   }
   isValidRecurso() {
-    return (RegExp(/^([A-Z]{4,})(?: - [A-z]{3,})?( [-|–] Equipe )([0-9]{3})$/).test(this.recurso));
+    return (RegExp(/^([A-Z]{3,})(?: - [A-z]{3,})?( [-|–] Equipe )([0-9]{3})$/).test(this.recurso));
   }
   isValidComposicao() {
     if(!isNaN(new Date(this.dia).getTime))
