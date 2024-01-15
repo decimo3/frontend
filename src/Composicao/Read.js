@@ -73,7 +73,7 @@ export default function Read() {
               <td>{c.dia.substr(0, 10).split('-').reverse().slice(0,2).join('/')}</td>
               <td>{c.adesivo}</td>
               <td>{c.placa.replace("-", "")}</td>
-              <td>{c.recurso.split(" ").map((x) => (x == "-" ? "" : x == "Religa" ? "R" : x == "Corte" ? "C" : x == "Equipe" ? "" : x )).join("")}</td>
+              <td>{c.abreviacao}</td>
               <td>{atividade[c.atividade]}</td>
               <td>{c.id_motorista}</td>
               <td>{c.motorista.split(" ", 1)[0]}</td>
