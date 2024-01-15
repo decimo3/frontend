@@ -1,9 +1,9 @@
 import React from "react";
-export const baseURL = "http://localhost:5131";
+export const baseURL = `http://${process.env.HOST}:${process.env.PORT}`;
 export const errorMsg = [
   "Algum problema no servidor, tente novamente mais tarde!",
   "Se o problema persistir, contacte o administrador do sistema.",
-  <a target="_blank" href='https://api.whatsapp.com/send?phone=5521975429768'>WhatsApp MestreRuan</a>
+  <a target="_blank" href={`https://api.whatsapp.com/send?phone=${process.env.PHONE}`}>WhatsApp MestreRuan</a>
 ];
 export async function Requisicao(locate, verbo="GET", data=null, param=null) {
   let local = param ? `${locate}/${param.join("/")}` : locate;
