@@ -31,6 +31,7 @@ export async function Carregar(locate, file) {
   const req = {
     method: 'POST',
     body: formData,
+    credentials: 'include',
   }
   try {
     let r = await fetch(url, req);
